@@ -4,8 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeloRu</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 5px rgba(128, 128, 128, 0.4);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #E99949;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #E99949;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #E99949;
+        }
+
+        .button-group {
+            text-align: center;
+        }
+
+        .btn-login {
+            width: 330px;
+            height: 50px;
+            background-color: #E99949;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #d88a3d;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .links p {
+            font-size: 14px;
+            font-weight: 500;
+            color: #8E8E93;
+        }
+
+        .links a {
+            color: #E99949;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #8E8E93;
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            color: #E99949;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="login-container">
+        <div class="logo">
+            <h1>ДЕЛО.РУ</h1>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="login">Логин (Email / СНИЛС / Телефон)</label>
+                <input type="text" id="login" name="login" value="Заявитель">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" value="1234">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-login">ВХОД</button>
+            </div>
+
+            <div class="links">
+                <p>Нет аккаунта? <a href="#" id="registrationLink">Регистрация</a></p>
+            </div>
+
+            <div class="forgot-password" id="forgotPassword">
+                Забыли пароль?
+            </div>
+        </form>
+    </div>
 </body>
 </html>
