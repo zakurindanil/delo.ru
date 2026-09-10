@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню судьи</title>
+    <link rel="stylesheet" href="../resourses/css/menu_style.css"/>
+    <link rel="stylesheet" href="../resourses/css/font.css"/>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="login.html" target="_blank">
+                <img src="../resourses/img/exit.png" alt="Выход">
+            </a>
+            <label for="title">ДЕЛО.РУ</label>
+        </div> 
+    
+        <div class="header-right">
+            <div class="name-role">
+                <label for="username" class="username">Иванов И.И.</label>
+                <label for="role" class="role">Судья</label>
+            </div>
+            <a href="profile.html" target="_blank">
+                <img src="../resourses/img/icon_user_light.png" alt="Профиль">
+            </a>
+        </div>
+    </header>
+    
+    <main class="content">
+        <aside class="menu-panel">
+            <p class="menu-title">Меню судьи</p>
+
+            <nav class="menu-items">
+                <label class="menu-item">
+                    <input type="radio" name="MainMenu" checked>
+                    <span class="menu-item-content">
+                        <img src="../resourses/img/category_one.png" alt="Дела">
+                        <span>Дела</span>
+                    </span>
+                </label>
+
+                <label class="menu-item">
+                    <input type="radio" name="MainMenu">
+                    <span class="menu-item-content">
+                        <img src="../resourses/img/category_two.png" alt="Расписание">
+                        <span>Расписание заседаний</span>
+                    </span>
+                </label>
+
+                <label class="menu-item">
+                    <input type="radio" name="MainMenu">
+                    <span class="menu-item-content">
+                        <img src="../resourses/img/alert.png" alt="Заявление">
+                        <span>Уведомления</span>
+                    </span>
+                </label>
+            </nav>
+        </aside>
+
+        <section class="page-content">
+        </section>
+    </main>
+</body>
+</html>

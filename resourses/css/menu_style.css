@@ -1,0 +1,160 @@
+/*Шапка*/
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAF3DD;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #E99949;
+    padding: 25px 20px;
+    justify-content: space-between;
+    display: flex;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 25px;
+}
+
+.header-left label {
+    color: #FAF3DD;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.header-left img {
+    width: 40px;
+    height: 40px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 20px;
+}
+
+.header-right .name-role {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.header-right .username {
+    color: #FAF3DD;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.header-right .role {
+    color: #5C5C5C;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.header-right img {
+    width: 60px;
+    height: 60px;
+}
+
+/*Боди*/
+
+.content {
+    display: flex;
+    padding: 30px 40px 30px 30px;
+    align-items: stretch;
+    gap: 40px;
+    flex: 1;
+}
+
+.menu-panel {
+    width: 280px;
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.4);
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.menu-title {
+    color: #C07E3C;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 0 15px 12px;
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #E99949;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-item input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+
+.menu-item-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.menu-item img {
+    width: 30px;
+    height: 30px;
+}
+
+.menu-item:hover {
+    background-color: #FFF8F0;
+}
+
+.menu-item:has(input[type="radio"]:checked) {
+    background-color: #FFF1E0;
+    font-weight: 600;
+}
+
+.page-content {
+    flex: 1;
+    min-width: 0;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.4);
+    padding: 25px;
+}
+
+.page-content h1 {
+    color: #E99949;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
