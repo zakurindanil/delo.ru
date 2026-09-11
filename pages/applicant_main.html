@@ -61,6 +61,9 @@
         <section class="page-content">
             <h1>Мои дела</h1>
             <p>Здесь будет список ваших дел.</p>
+            <div class="cases-list" id="casesList">
+
+            </div>
         </section>
     </main>
 
@@ -84,4 +87,85 @@
         </div>
     </footer>
 </body>
+
+<script src="../resourses/js/components/applicant/case-card.js"></script>
+
+<script>
+    const cases = [
+        {
+            number: '001-2026',
+            status: 'В работе',
+            statusColor: '#E99949',
+            type: 'Гражданское',
+            subType: 'Защита прав потребителя',
+            comment: 'Назначено предварительное заседание на 15.10.2026'
+        },
+        {
+            number: '002-2026',
+            status: 'Новое',
+            statusColor: '#4CAF50',
+            type: 'Трудовое',
+            subType: 'Восстановление на работе',
+            comment: 'Заявление принято, ожидает рассмотрения'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        }
+    ];
+
+    const list = document.getElementById('casesList');
+
+    cases.forEach(c => {
+        const card = document.createElement('case-card');
+        card.setAttribute('number', c.number);
+        card.setAttribute('status', c.status);
+        card.setAttribute('statusColor', c.statusColor);
+        card.setAttribute('type', c.type);
+        card.setAttribute('subType', c.subType);
+        card.setAttribute('comment', c.comment);
+        list.appendChild(card);
+    });
+
+    list.addEventListener('case-edit', (e) => {
+        console.log('Открыть дело:', e.detail.number);
+    });
+</script>
+
 </html>
