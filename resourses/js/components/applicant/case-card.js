@@ -137,7 +137,7 @@ class CardCase extends HTMLElement {
                     detail: { number }
                 }));
             });
-    }
+    }   
 }
 
 customElements.define('case-card', CardCase);

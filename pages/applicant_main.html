@@ -32,7 +32,7 @@
             <p class="menu-title">Меню заявителя</p>
 
             <nav class="menu-items">
-                <label class="menu-item">
+                <label class="menu-item" data-tab="cases">
                     <input type="radio" name="MainMenu" checked>
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_one.png" alt="Дела">
@@ -40,7 +40,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="schedule">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_two.png" alt="Расписание">
@@ -48,7 +48,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="new-case">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_three.png" alt="Заявление">
@@ -59,11 +59,23 @@
         </aside>
 
         <section class="page-content">
-            <h1>Мои дела</h1>
-            <p>Здесь будет список ваших дел.</p>
-            <div class="cases-list" id="casesList">
 
+            <div class="tab-content active" data-tab="cases">
+                <h1>Мои дела</h1>
+                <div class="cases-list" id="casesList"></div>
             </div>
+        
+            <div class="tab-content" data-tab="schedule">
+                <h1>Расписание заседаний</h1>
+                <p>Здесь будет календарь заседаний.</p>
+                <div class="shedules-list" id="shedulesList"></div>
+            </div>
+        
+            <div class="tab-content" data-tab="new-case">
+                <h1>Подать заявление</h1>
+                <p>Здесь будет форма подачи заявления.</p>
+            </div>
+        
         </section>
     </main>
 
@@ -86,9 +98,29 @@
             <p>©2026 ДЕЛО.РУ | Все права защищены</p>
         </div>
     </footer>
+
+    <script>
+        // Переключение вкладок
+        const menuItems  = document.querySelectorAll('.menu-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+            
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+            
+                tabContents.forEach(el => {
+                    el.classList.toggle('active', el.dataset.tab === tab);
+                });
+            
+                item.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+    </script>
+
 </body>
 
 <script src="../resourses/js/components/applicant/case-card.js"></script>
+<script src="../resourses/js/components/applicant/case-shedule.js"></script>
 
 <script>
     const cases = [
@@ -165,6 +197,68 @@
 
     list.addEventListener('case-edit', (e) => {
         console.log('Открыть дело:', e.detail.number);
+    });
+
+    const shedules = [
+        {
+            time: '15 октября 2026, 10:00',
+            caser: '001-2026',
+            typeCase: 'Гражданское',
+            subType: 'Защита прав потребителя'
+        },
+        {
+            time: '15 октября 2026, 14:30',
+            caser: '002-2026',
+            typeCase: 'Трудовое',
+            subType: 'Восстановление на работе'
+        },
+        {
+            time: '17 октября 2026, 09:15',
+            caser: '005-2026',
+            typeCase: 'Административное',
+            subType: 'Оспаривание штрафа'
+        },
+        {
+            time: '20 октября 2026, 11:00',
+            caser: '003-2026',
+            typeCase: 'Наследственное',
+            subType: 'Раздел имущества'
+        },
+        {
+            time: '22 октября 2026, 16:45',
+            caser: '007-2026',
+            typeCase: 'Семейное',
+            subType: 'Расторжение брака'
+        },
+        {
+            time: '25 октября 2026, 12:00',
+            caser: '009-2026',
+            typeCase: 'Гражданское',
+            subType: 'Возмещение ущерба'
+        },
+        {
+            time: '28 октября 2026, 15:30',
+            caser: '011-2026',
+            typeCase: 'Земельное',
+            subType: 'Спор о границах участка'
+        },
+        {
+            time: '1 ноября 2026, 10:30',
+            caser: '014-2026',
+            typeCase: 'Налоговое',
+            subType: 'Оспаривание решения ФНС'
+        }
+    ];
+
+    const list1 = document.getElementById('shedulesList');
+
+    shedules.forEach(s => {
+        const cardShedule = document.createElement('case-shedule');
+        cardShedule.setAttribute('time', s.time);
+        cardShedule.setAttribute('caser', s.caser);
+        cardShedule.setAttribute('typeCase', s.typeCase);
+        cardShedule.setAttribute('subType', s.subType);
+        list1.appendChild(cardShedule);
     });
 </script>
 

@@ -168,6 +168,15 @@ header {
     padding-right: 8px;
 }
 
+.shedules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
 .cases-list::-webkit-scrollbar {
     width: 8px;
 }
@@ -176,6 +185,18 @@ header {
     border-radius: 4px;
 }
 .cases-list::-webkit-scrollbar-track {
+    background-color: #F9F5EC;
+    border-radius: 4px;
+}
+
+.shedules-list::-webkit-scrollbar {
+    width: 8px;
+}
+.shedules-list::-webkit-scrollbar-thumb {
+    background-color: #E99949;
+    border-radius: 4px;
+}
+.shedules-list::-webkit-scrollbar-track {
     background-color: #F9F5EC;
     border-radius: 4px;
 }
@@ -263,4 +284,14 @@ footer {
     font-weight: 500;
     color: #FAF3DD;
     opacity: 0.85;
+}
+
+/*Переход между окнами*/
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
