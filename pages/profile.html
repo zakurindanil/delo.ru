@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="../resourses/css/profile_style.css">
+    <link rel="stylesheet" href="../resourses/css/font.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="login.html" target="_blank">
+                <img src="../resourses/img/exit.png" alt="Выход">
+            </a>
+            <label for="title">ДЕЛО.РУ</label>
+        </div> 
+    
+        <div class="header-right">
+            <div class="name-role">
+                <label for="username" class="username">Иванов И.И.</label>
+                <label for="role" class="role">Заявитель</label>
+            </div>
+            <a href="profile.html" target="_blank">
+                <img src="../resourses/img/icon_user_light.png" alt="Профиль">
+            </a>
+        </div>
+    </header>
+
+        <div class="content-items">
+            <div class="left-panel">
+                <div class="left-content-panel">
+                    <img src="../resourses/img/icon_user_light.png" alt="Аватар">
+                    <span class="role">Заявитель</span>
+                    <span class="username">Иванов Иван</span>
+                    <button type="button" class="btn-to-main" onclick="window.location.href='applicant_main.html'">Назад в меню</button>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="right-content-panel">
+                    <h2>Личный кабинет заявителя</h2>
+                    <p>Здесь вы можете дополнить или изменить данные вашего профиля.</p>
+                    <form action="" id="profileForm">
+                        <div class="form-group">
+                            <label for="fullName">ФИО</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="button" class="btn-save" onclick="window.location.href='applicant_main.html'">Сохранить изменения</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <footer>
+        <div class="foot">
+            <div class="left">
+                <label for="title">ДЕЛО.РУ</label>
+                <p>г.Пермь, ул.Комсомольский проспект, 20 <br> +7 (912) 888-70-54</p>
+            </div>
+            <div class="right">
+                <p>Заглядывайте к нам:</p>
+                <div class="img_soc">
+                    <img class="social_networks">
+                    <img class="social_networks">
+                    <img class="social_networks">
+                </div>
+            </div>
+        </div>
+        <div class="rights">
+            <p>©2026 ДЕЛО.РУ | Все права защищены</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -68,95 +68,162 @@ header {
 /*Боди*/
 
 .content {
-    display: flex;
-    padding: 30px 40px 30px 30px;
-    align-items: stretch;
-    gap: 40px;
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    min-height: 0;
 }
 
-.menu-panel {
-    width: 280px;
-    background-color: white;
-    box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.4);
-    padding: 15px;
-    border-radius: 15px;
+.content-items {
+    display: flex;
+    flex-direction: row;
+    max-width: 1100px;
+    width: 100%;
+    margin: auto;
+    padding: 30px;
+    box-sizing: border-box;
+    align-self: center;
 }
 
-.menu-title {
-    color: #C07E3C;
-    font-size: 15px;
-    font-weight: 500;
-    margin: 0 0 15px 12px;
-}
-
-.menu-items {
+.left-panel {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #E99949;
+    padding: 50px 40px;
+    border-radius: 15px 0px 0px 15px;
 }
 
-.menu-item {
-    position: relative;
+.left-content-panel {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 10px 15px;
-    border-radius: 8px;
-    color: #E99949;
+    text-align: center;
+}
+
+.left-content-panel img {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+.left-content-panel .role {
+    color: #5C5C5C;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.left-content-panel .username {
+    color: #FAF3DD;
     font-size: 16px;
     font-weight: bold;
+    margin-bottom: 45px;
+}
+
+.left-content-panel .btn-to-main {
+    width: 201px;
+    padding: 10px 0;
+    background-color: #FFFFFF;
+    color: #E99949;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight:bold;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.3s;
 }
 
-.menu-item input[type="radio"] {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    margin: 0;
-    cursor: pointer;
-    z-index: 1;
+.btn-to-main:hover {
+    background-color: #dfdfdf;
 }
 
-
-.menu-item-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.menu-item img {
-    width: 30px;
-    height: 30px;
-}
-
-.menu-item:hover {
-    background-color: #FFF8F0;
-}
-
-.menu-item:has(input[type="radio"]:checked) {
-    background-color: #FFF1E0;
-    font-weight: 600;
-}
-
-.page-content {
+.right-panel {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
     background-color: #FFFFFF;
-    border-radius: 15px;
-    box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.4);
-    padding: 25px;
+    padding: 40px 40px;
+    border-radius: 0px 15px 15px 0px;
 }
 
-.page-content h1 {
+.right-content-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.right-content-panel h2 {
+    color: #5C5C5C;
+    margin: 0px 0px 10px 0px;
+}
+
+.right-content-panel p {
+    color: #5C5C5C;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0px 0px 10px 0px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
     color: #E99949;
-    font-size: 24px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+}
+
+.form-group input:hover {
+    border-color: #f0b273;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #E99949;
+    background-color: #FFFDF9;
+    box-shadow: 0 0 0 4px rgba(233, 153, 73, 0.15);
+}
+
+.button-group {
+    text-align: right;
+    margin-top: auto;
+}
+
+.btn-save {
+    width: auto;
+    padding: 12px 30px;
+    background-color: #E99949;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-save:hover {
+    background-color: #d88a3d;
 }
 
 /*Футер*/
