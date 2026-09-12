@@ -339,12 +339,6 @@
         cardJudjeCase.setAttribute('date', j.date);
         judjeCaseList.appendChild(cardJudjeCase);
     });
-
-    // Переход по кнопке
-    judjeCaseList.addEventListener('case-approve', (e) => {
-        const uid = e.detail.uid;
-        window.location.href = `approve_case.html?uid=${uid}`;
-    });
 </script>
 
 </html>
