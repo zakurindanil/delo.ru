@@ -33,7 +33,6 @@ class CardCase extends HTMLElement {
                     display: block;
                 }
 
-                /* ===== Карточка дела ===== */
                 .cardCase {
                     background-color: #FFFFFF;
                     border-radius: 12px;
@@ -57,7 +56,6 @@ class CardCase extends HTMLElement {
                     margin-bottom: 15px;
                 }
 
-                /* ===== Номер дела ===== */
                 .cardCase .number {
                     color: #3D3D3D;
                     font-size: 20px;
@@ -82,7 +80,6 @@ class CardCase extends HTMLElement {
                     display: none;
                 }
 
-                /* ===== Тип и подтип ===== */
                 .cardCase .type,
                 .cardCase .subType {
                     color: #555555;
@@ -96,7 +93,6 @@ class CardCase extends HTMLElement {
                     margin-bottom: 15px;
                 }
 
-                /* ===== Комментарий ===== */
                 .commentBackground {
                     background-color: #F9F5EC;
                     border-radius: 8px;

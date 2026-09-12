@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Меню судьи</title>
     <link rel="stylesheet" href="../resourses/css/menu_style.css"/>
+    <link rel="stylesheet" href="../resourses/css/judje_style.css"/>
     <link rel="stylesheet" href="../resourses/css/font.css"/>
 </head>
 <body>
@@ -32,7 +33,7 @@
             <p class="menu-title">Меню судьи</p>
 
             <nav class="menu-items">
-                <label class="menu-item">
+                <label class="menu-item" data-tab="cases">
                     <input type="radio" name="MainMenu" checked>
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_one.png" alt="Дела">
@@ -40,7 +41,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="schedule">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_two.png" alt="Расписание">
@@ -48,7 +49,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="notifications">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/alert.png" alt="Заявление">
@@ -59,6 +60,23 @@
         </aside>
 
         <section class="page-content">
+            <div class="tab-content active" data-tab="cases">
+                <h1>Дела</h1>
+                <p>Список дел, назначенных вам для рассмотрения и вынесения решений.</p>
+                <div class="judje-case-list" id="casesJudjeList"></div>
+            </div>
+
+            <div class="tab-content" data-tab="schedule">
+                <h1>Расписание заседаний</h1>
+                <p>График назнчаенных вами судебных заседаний.</p>
+                <div class="shedules-list" id="shedulesList"></div>
+            </div>
+        
+            <div class="tab-content" data-tab="notifications">
+                <h1>Уведомления</h1>
+                <p>Информация о новых поступивших делах, распределённых на вас.</p>
+                <div class="notifications-list" id="notificationsList"></div>
+            </div>
         </section>
     </main>
 
@@ -81,5 +99,252 @@
             <p>©2026 ДЕЛО.РУ | Все права защищены</p>
         </div>
     </footer>
+
+    <!--Переход между вкладками-->
+
+    <script>
+        const menuItems   = document.querySelectorAll('.menu-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+
+                tabContents.forEach(el => {
+                    el.classList.toggle('active', el.dataset.tab === tab);
+                });
+
+                item.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+    </script>
 </body>
+
+<script src="../resourses/js/components/applicant/case-shedule.js"></script>
+<script src="../resourses/js/components/judje/notification-card.js"></script>
+<script src="../resourses/js/components/judje/card-case-judje.js"></script>
+
+<script>
+    const shedules = [
+        {
+            time: '15 октября 2026, 10:00',
+            caser: '001-2026',
+            typeCase: 'Гражданское',
+            subType: 'Защита прав потребителя'
+        },
+        {
+            time: '15 октября 2026, 14:30',
+            caser: '002-2026',
+            typeCase: 'Трудовое',
+            subType: 'Восстановление на работе'
+        },
+        {
+            time: '17 октября 2026, 09:15',
+            caser: '005-2026',
+            typeCase: 'Административное',
+            subType: 'Оспаривание штрафа'
+        },
+        {
+            time: '20 октября 2026, 11:00',
+            caser: '003-2026',
+            typeCase: 'Наследственное',
+            subType: 'Раздел имущества'
+        },
+        {
+            time: '22 октября 2026, 16:45',
+            caser: '007-2026',
+            typeCase: 'Семейное',
+            subType: 'Расторжение брака'
+        },
+        {
+            time: '25 октября 2026, 12:00',
+            caser: '009-2026',
+            typeCase: 'Гражданское',
+            subType: 'Возмещение ущерба'
+        },
+        {
+            time: '28 октября 2026, 15:30',
+            caser: '011-2026',
+            typeCase: 'Земельное',
+            subType: 'Спор о границах участка'
+        },
+        {
+            time: '1 ноября 2026, 10:30',
+            caser: '014-2026',
+            typeCase: 'Налоговое',
+            subType: 'Оспаривание решения ФНС'
+        }
+    ];
+
+    const list1 = document.getElementById('shedulesList');
+
+    shedules.forEach(s => {
+        const cardShedule = document.createElement('case-shedule');
+        cardShedule.setAttribute('time', s.time);
+        cardShedule.setAttribute('caser', s.caser);
+        cardShedule.setAttribute('typeCase', s.typeCase);
+        cardShedule.setAttribute('subType', s.subType);
+        list1.appendChild(cardShedule);
+    });
+
+    const notifications = [
+        {
+            caseNumber:  '11-2026',
+            applicant:   'Гарилов Сергей Иванович',
+            typeCase:    'Исковые заявления о защите семейных прав',
+            subtypeCase: 'Расторжение брака',
+            date:        '23.06.2026 03:44'
+        },
+        {
+            caseNumber:  '12-2026',
+            applicant:   'Климов Степан Иванович',
+            typeCase:    'Гражданское',
+            subtypeCase: 'Защита прав потребителя',
+            date:        '23.06.2026 10:15'
+        },
+        {
+            caseNumber:  '14-2026',
+            applicant:   'Петрова Анна Сергеевна',
+            typeCase:    'Трудовое',
+            subtypeCase: 'Восстановление на работе',
+            date:        '24.06.2026 09:30'
+        },
+        {
+            caseNumber:  '17-2026',
+            applicant:   'Сидоров Пётр Алексеевич',
+            typeCase:    'Административное',
+            subtypeCase: 'Оспаривание штрафа',
+            date:        '25.06.2026 14:20'
+        },
+        {
+            caseNumber:  '19-2026',
+            applicant:   'Николаева Ольга Дмитриевна',
+            typeCase:    'Наследственное',
+            subtypeCase: 'Раздел имущества',
+            date:        '26.06.2026 11:50'
+        },
+        {
+            caseNumber:  '22-2026',
+            applicant:   'Морозов Дмитрий Олегович',
+            typeCase:    'Земельное',
+            subtypeCase: 'Спор о границах участка',
+            date:        '27.06.2026 16:05'
+        }
+    ];
+
+    const listNotification = document.getElementById('notificationsList');
+
+    notifications.forEach(n => {
+        const cardNotification = document.createElement('notification-card');
+        cardNotification.setAttribute('caseNumber', n.caseNumber);
+        cardNotification.setAttribute('applicant', n.applicant);
+        cardNotification.setAttribute('typeCase', n.typeCase);
+        cardNotification.setAttribute('subtypeCase', n.subtypeCase);
+        cardNotification.setAttribute('date', n.date);
+        listNotification.appendChild(cardNotification);
+    });
+
+    const judjeCases = [
+        {
+            uid:         '11-2026',
+            status:      'Не назначено',
+            typeCase:    'Исковые заявления о защите семейных прав',
+            subtypeCase: 'Расторжение брака и раздел имущества супругов',
+            applicant:   'Гарилов Сергей Иванович',
+            date:        'Не назначено'
+        },
+        {
+            uid:         '12-2026',
+            status:      'Не назначено',
+            typeCase:    'Гражданское',
+            subtypeCase: 'Защита прав потребителя',
+            applicant:   'Климов Степан Иванович',
+            date:        'Не назначено'
+        },
+        {
+            uid:         '14-2026',
+            status:      'Назначено',
+            typeCase:    'Трудовое',
+            subtypeCase: 'Восстановление на работе',
+            applicant:   'Петрова Анна Сергеевна',
+            date:        '16 сентября 2026 г. в 12:00'
+        },
+        {
+            uid:         '17-2026',
+            status:      'Не назначено',
+            typeCase:    'Административное',
+            subtypeCase: 'Оспаривание штрафа ГИБДД',
+            applicant:   'Сидоров Пётр Алексеевич',
+            date:        'Не назначено'
+        },
+        {
+            uid:         '19-2026',
+            status:      'Назначено',
+            typeCase:    'Наследственное',
+            subtypeCase: 'Раздел имущества между наследниками',
+            applicant:   'Николаева Ольга Дмитриевна',
+            date:        '20 сентября 2026 г. в 10:30'
+        },
+        {
+            uid:         '22-2026',
+            status:      'Не назначено',
+            typeCase:    'Земельное',
+            subtypeCase: 'Спор о границах земельного участка',
+            applicant:   'Морозов Дмитрий Олегович',
+            date:        'Не назначено'
+        },
+        {
+            uid:         '24-2026',
+            status:      'Назначено',
+            typeCase:    'Семейное',
+            subtypeCase: 'Взыскание алиментов на несовершеннолетнего ребёнка',
+            applicant:   'Смирнова Елена Владимировна',
+            date:        '23 сентября 2026 г. в 14:15'
+        },
+        {
+            uid:         '26-2026',
+            status:      'Не назначено',
+            typeCase:    'Налоговое',
+            subtypeCase: 'Оспаривание решения ФНС',
+            applicant:   'ООО «СтройГарант»',
+            date:        'Не назначено'
+        },
+        {
+            uid:         '28-2026',
+            status:      'Назначено',
+            typeCase:    'Гражданское',
+            subtypeCase: 'Возмещение ущерба от залива квартиры',
+            applicant:   'Волков Андрей Николаевич',
+            date:        '25 сентября 2026 г. в 09:45'
+        },
+        {
+            uid:         '31-2026',
+            status:      'Не назначено',
+            typeCase:    'Трудовое',
+            subtypeCase: 'Взыскание задолженности по зарплате',
+            applicant:   'Кузнецов Игорь Петрович',
+            date:        'Не назначено'
+        }
+    ];
+
+    const judjeCaseList = document.getElementById('casesJudjeList');
+
+    judjeCases.forEach(j => {
+        const cardJudjeCase = document.createElement('card-case-judje');
+        cardJudjeCase.setAttribute('uid', j.uid);
+        cardJudjeCase.setAttribute('status', j.status);
+        cardJudjeCase.setAttribute('typeCase', j.typeCase);
+        cardJudjeCase.setAttribute('subtypeCase', j.subtypeCase);
+        cardJudjeCase.setAttribute('applicant', j.applicant);
+        cardJudjeCase.setAttribute('date', j.date);
+        judjeCaseList.appendChild(cardJudjeCase);
+    });
+
+    // Переход по кнопке
+    judjeCaseList.addEventListener('case-approve', (e) => {
+        const uid = e.detail.uid;
+        window.location.href = `approve_case.html?uid=${uid}`;
+    });
+</script>
+
 </html>

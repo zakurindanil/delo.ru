@@ -61,19 +61,71 @@
         <section class="page-content">
 
             <div class="tab-content active" data-tab="cases">
-                <h1>Мои дела</h1>
+                <h1>Мои судебные дела</h1>
+                <p>История всех поданых вами заявлений. Отслеживайте статусы от администрации суда.</p>
                 <div class="cases-list" id="casesList"></div>
             </div>
         
             <div class="tab-content" data-tab="schedule">
                 <h1>Расписание заседаний</h1>
-                <p>Здесь будет календарь заседаний.</p>
+                <p>Даты и время назначенных судебных заседаний по вашим делам.</p>
                 <div class="shedules-list" id="shedulesList"></div>
             </div>
         
             <div class="tab-content" data-tab="new-case">
                 <h1>Подать заявление</h1>
-                <p>Здесь будет форма подачи заявления.</p>
+                <p>Выберите тип и подтип заявления, затем укажите краткое описание дела.
+                    При возможности прикрепите нужные вам документы для передачи судье.</p>
+                <form action="" id="profileForm">
+                    <div class="form-group">
+                        <label>Тип заявления</label>
+                        <select name="type">
+                            <option value="" disabled selected hidden>Выберите тип</option>
+                            <option value="civil">Гражданское</option>
+                            <option value="labor">Трудовое</option>
+                            <option value="admin">Административное</option>
+                            <option value="criminal">Уголовное</option>
+                            <option value="family">Семейное</option>
+                            <option value="inherit">Наследственное</option>
+                            <option value="land">Земельное</option>
+                            <option value="tax">Налоговое</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Подтип заявления</label>
+                        <select name="subType">
+                            <option value="" disabled selected hidden>Выберите подтип</option>
+                            <option value="consumer">Защита прав потребителя</option>
+                            <option value="damage">Возмещение ущерба</option>
+                            <option value="restore">Восстановление на работе</option>
+                            <option value="salary">Взыскание зарплаты</option>
+                            <option value="divorce">Расторжение брака</option>
+                            <option value="alimony">Взыскание алиментов</option>
+                            <option value="property">Раздел имущества</option>
+                            <option value="dispute">Спор о границах участка</option>
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Краткое описание дела</label>
+                        <textarea type="tel" id="phone" name="phone" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Прикрепить файлы</label>
+                        <div class="choose-img-group">
+                            <button class="btn-img">
+                                <img src="../resourses/img/pin.png"/>
+                            </button>
+                            <label>Файлы не выбраны</label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-save">Отправить заявление</button>
+                    </div>
+                </form>
             </div>
         
         </section>
