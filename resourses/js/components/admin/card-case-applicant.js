@@ -12,7 +12,7 @@ class CardAdminApplicant extends HTMLElement {
         this.render();
     }
 
-    attributeChangedListener(attrName, oldValue, newValue) {
+    attributeChangedCallback(attrName, oldValue, newValue) {
         if (oldValue !== newValue && this.shadowRoot) {
             this.render();
         }
@@ -167,7 +167,7 @@ class CardAdminApplicant extends HTMLElement {
                 </div>
 
                 <div class="content-applicant">
-                    <img src="/resourses/img/icon_user.png" alt="Аватар">
+                    <img src="../resourses/img/icon_user.png" alt="Аватар">
                     <div class="applicant-info">
                         <p class="applicant-name">Заявитель: ${applicant}</p>
                         <p class="applicant-email">Email: ${email}</p>
@@ -178,7 +178,7 @@ class CardAdminApplicant extends HTMLElement {
         `;
 
         this.shadowRoot.querySelector('.cardCase').addEventListener('click', () => {
-            this.dispatchEvent(new CustomEvent('case-edit', {
+            this.dispatchEvent(new CustomEvent('case-open', {
                 bubbles: true,
                 composed: true,
                 detail: { number }

@@ -8,26 +8,17 @@
 </head>
 <body>
     <div class="cardCase">
-        <div class="statusBackground">
-            <h2 class="number">Судебное дело № ${number}</h2>
-            <p class="status">${status}</p>
-            <p class="statusColor">${statusColor}</p>
-        </div>
-
-        <p class="type">Тип: ${type}</p>
-        <p class="subType">Подтип: ${subType}</p>
-
-        <div class="commentBackground">
-            <p class="comment">Комментарий: ${comment}</p>
-        </div>
-
-        <div class="content-applicant">
+        <div class="content-judje">
             <img src="/resourses/img/icon_user.png" alt="Аватар">
-            <div class="applicant-info">
-                <p class="applicant-name">Заявитель: ${applicant}</p>
-                <p class="applicant-email">Email: ${email}</p>
-                <p class="applicant-phone">Телефон: ${phone}</p>
+            <div class="judje-info">
+                <p class="judje-name">${judjename}</p>
+                <p class="judje-email">Email: ${judjeemail}</p>
+                <p class="judje-phone">Телефон: ${judjephone}</p>
             </div>
+        </div>
+        <div class="btns">
+            <button class="judje-edit">Редактировать</button>
+            <button class="judje-delete">Удалить</button>
         </div>
     </div>
 </body>

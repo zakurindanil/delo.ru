@@ -9,6 +9,256 @@
     padding-right: 8px;
 }
 
+.select-list-judje {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 15px;
+}
+
+.judjes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 15px;
+}
+
+/*Форма редактирования*/
+
+.back-link {
+    display: inline-block;
+    color: #E99949;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.25s;
+}
+
+.back-link:hover {
+    color: #d88a3d;
+    text-decoration: underline;
+}
+
+.edit-form-wrapper {
+    width: 100%;
+}
+
+.edit-form-wrapper h1 {
+    color: #5C5C5C;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0px 0px 10px 0px;
+}
+
+.edit-form-wrapper > p {
+    color: #5C5C5C;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0px 0px 25px 0px;
+}
+
+.edit-form {
+    width: 100%;
+}
+
+.edit-form .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-form .form-group label {
+    display: block;
+    color: #E99949;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.edit-form .form-group input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #5C5C5C;
+    box-sizing: border-box;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+}
+
+.edit-form .form-group input:hover {
+    border-color: #f0b273;
+}
+
+.edit-form .form-group input:focus {
+    outline: none;
+    border-color: #E99949;
+    background-color: #FFFDF9;
+    box-shadow: 0 0 0 4px rgba(233, 153, 73, 0.15);
+}
+
+.edit-form .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/*Осмотр заявления*/
+
+.review-subtitle {
+    color: #8E8E93;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0px 0px 25px 0px;
+}
+
+.section-title {
+    color: #5C5C5C;
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0px 0px 15px 0px;
+}
+
+.applicant-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.applicant-avatar {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.applicant-data {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.applicant-line {
+    color: #3D3D3D;
+    font-size: 14px;
+    margin: 0px;
+}
+
+.documents-block {
+    background-color: #FAF3DD;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.documents-empty {
+    color: #8E8E93;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: italic;
+    margin: 0px;
+}
+
+.decision-block {
+    background-color: #FDF6F0;
+    border: 1px solid #F5E3D0;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.decision-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.decision-row label {
+    color: #E99949;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+}
+
+select:hover {
+    border-color: #f0b273;
+}
+
+select:focus {
+    outline: none;
+    border-color: #E99949;
+    background-color: #FFFDF9;
+    box-shadow: 0 0 0 4px rgba(233, 153, 73, 0.15);
+}
+
+.decision-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    font-size: 14px;
+    color: #3D3D3D;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.decision-textarea:hover {
+    border-color: #f0b273;
+}
+
+.decision-textarea:focus {
+    outline: none;
+    border-color: #E99949;
+    box-shadow: 0 0 0 4px rgba(233, 153, 73, 0.15);
+}
+
+.decision-block .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.decision-block .btn-save {
+    padding: 12px 30px;
+    background-color: #E99949;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.15s, box-shadow 0.25s;
+}
+
+.decision-block .btn-save:hover {
+    background-color: #d88a3d;
+    box-shadow: 0 6px 14px rgba(233, 153, 73, 0.35);
+}
+
 /*Скролл*/
 
 .cases-list-applicants::-webkit-scrollbar {
@@ -19,6 +269,30 @@
     border-radius: 4px;
 }
 .cases-list-applicants::-webkit-scrollbar-track {
+    background-color: #F9F5EC;
+    border-radius: 4px;
+}
+
+.select-list-judje::-webkit-scrollbar {
+    width: 8px;
+}
+.select-list-judje::-webkit-scrollbar-thumb {
+    background-color: #E99949;
+    border-radius: 4px;
+}
+.select-list-judje::-webkit-scrollbar-track {
+    background-color: #F9F5EC;
+    border-radius: 4px;
+}
+
+.judjes-list::-webkit-scrollbar {
+    width: 8px;
+}
+.judjes-list::-webkit-scrollbar-thumb {
+    background-color: #E99949;
+    border-radius: 4px;
+}
+.judjes-list::-webkit-scrollbar-track {
     background-color: #F9F5EC;
     border-radius: 4px;
 }

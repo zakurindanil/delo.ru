@@ -33,7 +33,7 @@
             <p class="menu-title">Меню администратора</p>
 
             <nav class="menu-items">
-                <label class="menu-item">
+                <label class="menu-item" data-tab="cases-admin">
                     <input type="radio" name="MainMenu" checked>
                     <span class="menu-item-content">
                         <img src="../resourses/img/category_three.png" alt="Дела">
@@ -41,7 +41,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="judje-select">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/admin_category_two.png" alt="Расписание">
@@ -49,7 +49,7 @@
                     </span>
                 </label>
 
-                <label class="menu-item">
+                <label class="menu-item" data-tab="judje-list">
                     <input type="radio" name="MainMenu">
                     <span class="menu-item-content">
                         <img src="../resourses/img/admin_category_three.png" alt="Заявление">
@@ -64,6 +64,108 @@
                 <h1>Входящие заявления</h1>
                 <p>Реестр всех судебных дел, поступивших в систему.</p>
                 <div class="cases-list-applicants" id="casesApplicantsList"></div>
+            </div>
+
+            <div class="tab-content" data-tab="judje-select">
+                <h1>Назначение дел судьям</h1>
+                <p>Выберите дело и судью из списков ниже.</p>
+                <form action="" id="selectForm">
+                    <div class="form-group">
+                        <label>Выберите заявление</label>
+                        <div class="select-list-judje" id="selectJudjeList"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Выберите судью</label>
+                        <select name="judje">
+                            <option value="" disabled selected hidden>Выберите судью</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-save">Назначить судью</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-content" data-tab="judje-list">
+                <h1>Управление списком судей</h1>
+                <p>Полный список судей зарегистрированных в системе.</p>
+                <div class="judjes-list" id="casesJudjesList"></div>
+            </div>
+
+            <div class="tab-content" data-tab="case-review">
+                <a href="#" class="back-link" id="backToAdminCases">← Назад к входящим</a>
+                        
+                <h1 id="reviewTitle">Судебное дело № —</h1>
+                <p id="reviewTypeLine" class="review-subtitle">Тип: — (Подтип: —)</p>
+                        
+                <h2 class="section-title">Данные заявителя</h2>
+                <div class="applicant-block">
+                    <img src="../resourses/img/icon_user.png" alt="Аватар" class="applicant-avatar">
+                    <div class="applicant-data">
+                        <p class="applicant-line" id="reviewApplicant">ФИО: —</p>
+                        <p class="applicant-line" id="reviewEmail">Email: —</p>
+                        <p class="applicant-line" id="reviewPhone">Телефон: —</p>
+                    </div>
+                </div>
+            
+                <h2 class="section-title">Документы дела</h2>
+                <div class="documents-block">
+                    <p class="documents-empty">Файлы не прикреплены</p>
+                </div>
+            
+                <h2 class="section-title">Решение по заявлению</h2>
+                <div class="decision-block">
+                    <div class="decision-row">
+                        <label>Статус заявления:</label>
+                        <select class="decision-select">
+                            <option value="" disabled selected hidden>Выберите решение</option>
+                            <option value="approve">Принять в производство</option>
+                            <option value="revise">Отправить на доработку</option>
+                            <option value="reject">Отклонить</option>
+                        </select>
+                    </div>
+                
+                    <div class="decision-row">
+                        <label>Написать новый ответ:</label>
+                        <textarea class="decision-textarea" placeholder="Введите текст ответа..."></textarea>
+                    </div>
+                
+                    <div class="button-group">
+                        <button type="button" class="btn-save">Отправить ответ</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" data-tab="edit-judje">
+                <a href="#" class="back-link" id="backToJudjes">← Назад к списку судей</a>
+
+                <div class="edit-form-wrapper">
+                    <h1>Редактирование данных судьи</h1>
+                    <p>Здесь вы можете изменить ФИО, email или телефон судьи.</p>
+                
+                    <form class="edit-form">
+                        <div class="form-group">
+                            <label for="judjeName">ФИО</label>
+                            <input type="text" id="judjeName" name="judjeName">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="judjeEmail">Email</label>
+                            <input type="email" id="judjeEmail" name="judjeEmail">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="judjePhone">Телефон</label>
+                            <input type="tel" id="judjePhone" name="judjePhone">
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="button" class="btn-save">Сохранить изменения</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
@@ -109,6 +211,9 @@
 </body>
 
 <script src="../resourses/js/components/admin/card-case-applicant.js"></script>
+<script src="../resourses/js/components/applicant/case-card.js"></script>
+<script src="../resourses/js/components/admin/card-judje.js"></script>
+
 
 <script>
     const casesApplicant = [
@@ -229,6 +334,170 @@
         cardCaseApplicant.setAttribute('phone', c.phone);
         list1.appendChild(cardCaseApplicant);
     });
+
+    const applicantsList = document.getElementById('casesApplicantsList');
+
+    applicantsList.addEventListener('case-open', (e) => {
+        switchTab('case-review');
+    });
+    
+    document.getElementById('backToAdminCases').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('cases-admin');
+    });
+
+    const cases = [
+        {
+            number: '001-2026',
+            status: 'В работе',
+            statusColor: '#E99949',
+            type: 'Гражданское',
+            subType: 'Защита прав потребителя',
+            comment: 'Назначено предварительное заседание на 15.10.2026'
+        },
+        {
+            number: '002-2026',
+            status: 'Новое',
+            statusColor: '#4CAF50',
+            type: 'Трудовое',
+            subType: 'Восстановление на работе',
+            comment: 'Заявление принято, ожидает рассмотрения'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        },
+        {
+            number: '003-2026',
+            status: 'Закрыто',
+            statusColor: '#8E8E93',
+            type: 'Наследственное',
+            subType: 'Раздел имущества',
+            comment: 'Решение вступило в силу 20.01.2026'
+        }
+    ];
+
+    const list = document.getElementById('selectJudjeList');
+
+    cases.forEach(c => {
+        const card = document.createElement('case-card');
+        card.setAttribute('number', c.number);
+        card.setAttribute('status', c.status);
+        card.setAttribute('statusColor', c.statusColor);
+        card.setAttribute('type', c.type);
+        card.setAttribute('subType', c.subType);
+        card.setAttribute('comment', c.comment);
+        list.appendChild(card);
+    });
+
+    const judjes = [
+        {
+            judjename:  'Иванов Иван Иванович',
+            judjeemail: 'ivanov.ii@delo.ru',
+            judjephone: '+7 (342) 220-15-01'
+        },
+        {
+            judjename:  'Петрова Анна Сергеевна',
+            judjeemail: 'petrova.as@delo.ru',
+            judjephone: '+7 (342) 220-15-02'
+        },
+        {
+            judjename:  'Николаева Ольга Дмитриевна',
+            judjeemail: 'nikolaeva.od@delo.ru',
+            judjephone: '+7 (342) 220-15-03'
+        },
+        {
+            judjename:  'Гарилов Сергей Иванович',
+            judjeemail: 'garilov.si@delo.ru',
+            judjephone: '+7 (342) 220-15-04'
+        },
+        {
+            judjename:  'Сидоров Пётр Алексеевич',
+            judjeemail: 'sidorov.pa@delo.ru',
+            judjephone: '+7 (342) 220-15-05'
+        },
+        {
+            judjename:  'Морозов Дмитрий Олегович',
+            judjeemail: 'morozov.do@delo.ru',
+            judjephone: '+7 (342) 220-15-06'
+        },
+        {
+            judjename:  'Волков Андрей Николаевич',
+            judjeemail: 'volkov.an@delo.ru',
+            judjephone: '+7 (342) 220-15-07'
+        },
+        {
+            judjename:  'Кузнецов Игорь Петрович',
+            judjeemail: 'kuznetsov.ip@delo.ru',
+            judjephone: '+7 (342) 220-15-08'
+        },
+        {
+            judjename:  'Смирнова Елена Владимировна',
+            judjeemail: 'smirnova.ev@delo.ru',
+            judjephone: '+7 (342) 220-15-09'
+        },
+        {
+            judjename:  'Фёдорова Мария Андреевна',
+            judjeemail: 'fedorova.ma@delo.ru',
+            judjephone: '+7 (342) 220-15-10'
+        }
+    ];
+
+    const list2 = document.getElementById('casesJudjesList');
+
+    judjes.forEach(c => {
+        const cardCaseJudjes = document.createElement('card-judje');
+        cardCaseJudjes.setAttribute('judjename', c.judjename);
+        cardCaseJudjes.setAttribute('judjeemail', c.judjeemail);
+        cardCaseJudjes.setAttribute('judjephone', c.judjephone);
+        list2.appendChild(cardCaseJudjes);
+    });
+
+    // Переход на форму редактирования
+    const judjesList = document.getElementById('casesJudjesList');
+
+    judjesList.addEventListener('judje-edit', () => {
+        switchTab('edit-judje');
+    });
+
+    document.getElementById('backToJudjes').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('judje-list');
+    });
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.toggle('active', el.dataset.tab === tab);
+        });
+    }
 
 </script>
 
