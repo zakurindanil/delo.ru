@@ -7,15 +7,21 @@
     <link rel="stylesheet" href="../applicant/test.css">
 </head>
 <body>
-    <div class="content-card">
-        <div class="title-content">
-            <img src="/resourses/img/alert.png" alt="Уведомление">
-            <p class="title">Поступило новое дело</p>
+    <div class="cardCase">
+        <div class="statusBackground">
+            <h2 class="number">Судебное дело № ${number}</h2>
+            <p class="status">${status}</p>
+            <p class="statusColor">${statusColor}</p>
         </div>
-        <p class="info">Вам назначено дело №ДЕЛО-11-2026.</p>
-        <p class="info">Заявитель: Гарилов Сергей Иванович</p>
-        <p class="info">Тип: Исковые заявления о защите семейных прав — Расторжение брака</p>
-        <p class="info">Дата поступления: 23.06.2026 03:44</p>
+
+        <p class="type">Тип: ${type}</p>
+        <p class="subType">Подтип: ${subType}</p>
+
+        <div class="commentBackground">
+            <p class="comment">Комментарий: ${comment}</p>
+        </div>
+
+        <div></div>
     </div>
 </body>
 </html>

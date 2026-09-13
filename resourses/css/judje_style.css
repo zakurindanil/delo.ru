@@ -18,6 +18,102 @@
     padding-right: 8px;
 }
 
+/*Форма назначения заседания*/
+
+.appoint-content {
+    padding: 25px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.back-link {
+    display: inline-block;
+    color: #E99949;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.appoint-content h1 {
+    color: #5C5C5C;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0px 20px 15px 0px;
+}
+
+.appoint-content p {
+    color: #5C5C5C;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0px 0px 8px 0px;
+}
+
+.appoint-form {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.appoint-form .form-group {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.appoint-form label {
+    display: block;
+    color: #E99949;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.appoint-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #5C5C5C;
+    box-sizing: border-box;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+}
+
+.appoint-form input:hover {
+    border-color: #f0b273;
+}
+
+.appoint-form input:focus {
+    outline: none;
+    border-color: #E99949;
+    background-color: #FFFDF9;
+    box-shadow: 0 0 0 4px rgba(233, 153, 73, 0.15);
+}
+
+.appointBtn {
+    width: 100%;
+    padding: 14px 0;
+    margin-top: 10px;
+    background-color: #E99949;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.15s, box-shadow 0.25s;
+}
+
+.appointBtn:hover {
+    background-color: #d88a3d;
+}
+
 /*Скролл*/
 
 .notifications-list::-webkit-scrollbar {

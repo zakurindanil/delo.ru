@@ -77,6 +77,25 @@
                 <p>Информация о новых поступивших делах, распределённых на вас.</p>
                 <div class="notifications-list" id="notificationsList"></div>
             </div>
+
+            <div class="tab-content appoint-content" data-tab="appoint">
+                <a href="#" class="back-link" id="backToCases">Назад к списку дел</a>
+                <h1>Назначение судебного заседания</h1>
+                <p id="appointUid">УИД: ДЕЛО-</p>
+                <p id="appointApplicant">Заявитель: </p>
+                <form class="appoint-form" id="appointForm">
+                    <div class="form-group">
+                        <label>ДАТА ЗАСЕДАНИЯ</label>
+                        <input type="date" id="date" name="date">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>ВРЕМЯ НАЧАЛА</label>
+                        <input type="time" id="time" name="time">
+                    </div>
+                </form>
+                <button class="appointBtn">Утвердить и назначить</button>
+            </div>
         </section>
     </main>
 
@@ -339,6 +358,26 @@
         cardJudjeCase.setAttribute('date', j.date);
         judjeCaseList.appendChild(cardJudjeCase);
     });
+
+    judjeCaseList.addEventListener('case-approve', (e) => {
+        const { uid, applicant } = e.detail;
+
+        document.getElementById('appointUid').textContent = `УИД: ДЕЛО-${uid}`;
+        document.getElementById('appointApplicant').textContent = `Заявитель: ${applicant}`;
+
+        switchTab('appoint');
+    });
+
+    document.getElementById('backToCases').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('cases');
+    });
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.toggle('active', el.dataset.tab === tab);
+        });
+    }
 </script>
 
 </html>

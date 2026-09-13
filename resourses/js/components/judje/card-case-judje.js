@@ -150,7 +150,7 @@ class CardCaseJudge extends HTMLElement {
                 this.dispatchEvent(new CustomEvent('case-approve', {
                     bubbles: true,
                     composed: true,
-                    detail: { uid }
+                    detail: { uid, applicant }
                 }));
             });
     }

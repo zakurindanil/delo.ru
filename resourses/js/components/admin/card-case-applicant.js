@@ -1,0 +1,3 @@
+class CardAdminApplicant extends HTMLElement {
+    
+}
