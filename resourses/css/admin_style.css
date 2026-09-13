@@ -1,0 +1,24 @@
+/*Контейнеры для элементов*/
+
+.cases-list-applicants {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/*Скролл*/
+
+.cases-list-applicants::-webkit-scrollbar {
+    width: 8px;
+}
+.cases-list-applicants::-webkit-scrollbar-thumb {
+    background-color: #E99949;
+    border-radius: 4px;
+}
+.cases-list-applicants::-webkit-scrollbar-track {
+    background-color: #F9F5EC;
+    border-radius: 4px;
+}

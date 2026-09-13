@@ -60,6 +60,11 @@
         </aside>
 
         <section class="page-content">
+            <div class="tab-content active" data-tab="cases-admin">
+                <h1>Входящие заявления</h1>
+                <p>Реестр всех судебных дел, поступивших в систему.</p>
+                <div class="cases-list-applicants" id="casesApplicantsList"></div>
+            </div>
         </section>
     </main>
 
@@ -82,23 +87,147 @@
             <p>©2026 ДЕЛО.РУ | Все права защищены</p>
         </div>
     </footer>
+
+    <script>
+        // Переключение вкладок
+        const menuItems  = document.querySelectorAll('.menu-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+            
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+            
+                tabContents.forEach(el => {
+                    el.classList.toggle('active', el.dataset.tab === tab);
+                });
+            
+                item.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+    </script>
+
 </body>
 
 <script src="../resourses/js/components/admin/card-case-applicant.js"></script>
 
 <script>
     const casesApplicant = [
-        
+        {
+            number:   '001-2026',
+            status:   'В работе',
+            type:     'Гражданское',
+            subType:  'Защита прав потребителя',
+            comment:  'Назначено предварительное заседание на 15.10.2026. Стороны уведомлены.',
+            applicant: 'Климов Степан Иванович',
+            email:    'klimov@mail.ru',
+            phone:    '+7 (912) 888-70-54'
+        },
+        {
+            number:   '002-2026',
+            status:   'Новое',
+            type:     'Трудовое',
+            subType:  'Восстановление на работе',
+            comment:  'Заявление принято, ожидает рассмотрения. Назначение судьи в течение 5 дней.',
+            applicant: 'Петрова Анна Сергеевна',
+            email:    'petrova.a@yandex.ru',
+            phone:    '+7 (999) 123-45-67'
+        },
+        {
+            number:   '003-2026',
+            status:   'Закрыто',
+            type:     'Наследственное',
+            subType:  'Раздел имущества между наследниками',
+            comment:  'Решение вступило в законную силу 20.01.2026. Исполнительный лист выдан.',
+            applicant: 'Николаева Ольга Дмитриевна',
+            email:    'nikolaeva.olga@gmail.com',
+            phone:    '+7 (902) 555-11-22'
+        },
+        {
+            number:   '004-2026',
+            status:   'В работе',
+            type:     'Семейное',
+            subType:  'Расторжение брака и раздел имущества',
+            comment:  'Назначена судебная экспертиза. Срок — до 30.11.2026.',
+            applicant: 'Гарилов Сергей Иванович',
+            email:    'garilov.s@mail.ru',
+            phone:    '+7 (912) 444-33-22'
+        },
+        {
+            number:   '005-2026',
+            status:   'Отложено',
+            type:     'Административное',
+            subType:  'Оспаривание штрафа ГИБДД',
+            comment:  'Заседание отложено по ходатайству заявителя. Новая дата — 12.11.2026.',
+            applicant: 'Сидоров Пётр Алексеевич',
+            email:    'sidorov.pa@bk.ru',
+            phone:    '+7 (950) 777-88-99'
+        },
+        {
+            number:   '006-2026',
+            status:   'Новое',
+            type:     'Земельное',
+            subType:  'Спор о границах земельного участка',
+            comment:  'Исковое заявление поступило 10.09.2026. Проводится подготовка к разбирательству.',
+            applicant: 'Морозов Дмитрий Олегович',
+            email:    'morozov.do@mail.ru',
+            phone:    '+7 (908) 222-55-11'
+        },
+        {
+            number:   '007-2026',
+            status:   'В работе',
+            type:     'Налоговое',
+            subType:  'Оспаривание решения ФНС',
+            comment:  'Назначено предварительное слушание на 25.10.2026 в 10:00, зал №3.',
+            applicant: 'ООО «СтройГарант»',
+            email:    'info@stroygarant.ru',
+            phone:    '+7 (342) 220-15-30'
+        },
+        {
+            number:   '008-2026',
+            status:   'Закрыто',
+            type:     'Гражданское',
+            subType:  'Возмещение ущерба от залива квартиры',
+            comment:  'Требования удовлетворены частично. Решение от 15.08.2026 вступило в силу.',
+            applicant: 'Волков Андрей Николаевич',
+            email:    'volkov.an@gmail.com',
+            phone:    '+7 (909) 333-44-55'
+        },
+        {
+            number:   '009-2026',
+            status:   'Новое',
+            type:     'Трудовое',
+            subType:  'Взыскание задолженности по зарплате',
+            comment:  'Заявление зарегистрировано 12.09.2026. Ожидает назначения судьи.',
+            applicant: 'Кузнецов Игорь Петрович',
+            email:    'kuznetsov.ip@mail.ru',
+            phone:    '+7 (917) 666-77-88'
+        },
+        {
+            number:   '010-2026',
+            status:   'В работе',
+            type:     'Семейное',
+            subType:  'Взыскание алиментов на несовершеннолетнего ребёнка',
+            comment:  'Назначено заседание на 20.10.2026 в 14:15. Стороны уведомлены повестками.',
+            applicant: 'Смирнова Елена Владимировна',
+            email:    'smirnova.ev@yandex.ru',
+            phone:    '+7 (912) 111-22-33'
+        }
     ];
 
-    const list1 = document.getElementById('casesApplicantList');
+    const list1 = document.getElementById('casesApplicantsList');
 
-    cases.forEach(c => {
-        const card = document.createElement('card-case-applicant');
-        
-        
-
-        list1.appendChild(card);
+    casesApplicant.forEach(c => {
+        const cardCaseApplicant = document.createElement('card-case-applicant');
+        cardCaseApplicant.setAttribute('number', c.number);
+        cardCaseApplicant.setAttribute('status', c.status);
+        cardCaseApplicant.setAttribute('statusColor', c.statusColor);
+        cardCaseApplicant.setAttribute('type', c.type);
+        cardCaseApplicant.setAttribute('subType', c.subType);
+        cardCaseApplicant.setAttribute('comment', c.comment);
+        cardCaseApplicant.setAttribute('applicant', c.applicant);
+        cardCaseApplicant.setAttribute('email', c.email);
+        cardCaseApplicant.setAttribute('phone', c.phone);
+        list1.appendChild(cardCaseApplicant);
     });
 
 </script>

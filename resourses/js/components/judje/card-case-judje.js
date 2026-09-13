@@ -47,6 +47,9 @@ class CardCaseJudge extends HTMLElement {
                     padding: 15px;
                     height: min-content;
                     font-family: 'Montserrat', sans-serif;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch; 
                 }
 
                 .header-content {
@@ -108,8 +111,9 @@ class CardCaseJudge extends HTMLElement {
                 }
 
                 .btn-approve {
-                    width: 100%;
-                    padding: 12px 0;
+                    width: auto;
+                    padding: 12px 30px;
+                    margin-left: auto;
                     background-color: #E99949;
                     color: #FFFFFF;
                     border: none;

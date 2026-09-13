@@ -72,3 +72,43 @@
     margin: 0;
     word-wrap: break-word;
 }
+
+.content-applicant {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.content-applicant img {
+    width: 75px;
+    height: 75px;
+    margin-right: 15px;
+}
+
+.applicant-info {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.applicant-info .applicant-name {
+    margin: 0px 0px 10px 0px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #3D3D3D;
+}
+
+.applicant-info .applicant-email {
+    margin: 0px 0px 10px 0px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555555;
+}
+
+.applicant-info .applicant-phone {
+    margin: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555555;
+}
