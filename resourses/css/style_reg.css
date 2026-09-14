@@ -313,18 +313,6 @@
             background-color: #e5e5e5;
         }
 
-        .highlight-box {
-            background-color: #FFF8F0;
-            padding: 15px;
-            border-left: 4px solid #E99949;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-
-        .highlight-box p {
-            margin-bottom: 0;
-        }
-
         /*Футер*/
 
         footer {
