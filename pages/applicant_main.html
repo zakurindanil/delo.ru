@@ -128,6 +128,62 @@
                 </form>
             </div>
         
+            <div class="tab-content" data-tab="edit-case">
+                <a href="#" class="back-link" id="backToCases">Назад к списку дел</a>
+                        
+                <h1>Редактирование заявления</h1>
+                <p class="review-subtitle" id="editCaseNumber">Судебное дело № </p>
+                        
+                <form class="edit-form">
+                    <div class="form-group">
+                        <label>Тип заявления</label>
+                        <select id="editType" name="editType">
+                            <option value="Гражданское">Гражданское</option>
+                            <option value="Трудовое">Трудовое</option>
+                            <option value="Административное">Административное</option>
+                            <option value="Уголовное">Уголовное</option>
+                            <option value="Семейное">Семейное</option>
+                            <option value="Наследственное">Наследственное</option>
+                            <option value="Земельное">Земельное</option>
+                            <option value="Налоговое">Налоговое</option>
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Подтип заявления</label>
+                        <select id="editSubType" name="editSubType">
+                            <option value="Защита прав потребителя">Защита прав потребителя</option>
+                            <option value="Возмещение ущерба">Возмещение ущерба</option>
+                            <option value="Восстановление на работе">Восстановление на работе</option>
+                            <option value="Взыскание зарплаты">Взыскание зарплаты</option>
+                            <option value="Расторжение брака">Расторжение брака</option>
+                            <option value="Взыскание алиментов">Взыскание алиментов</option>
+                            <option value="Раздел имущества">Раздел имущества</option>
+                            <option value="Спор о границах участка">Спор о границах участка</option>
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Краткое описание дела</label>
+                        <textarea id="editComment" name="editComment"></textarea>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Прикрепить файлы</label>
+                        <div class="choose-img-group">
+                            <button type="button" class="btn-img">
+                                <img src="../resourses/img/pin.png" alt="Прикрепить"/>
+                            </button>
+                            <label>Файлы не выбраны</label>
+                        </div>
+                    </div>
+                
+                    <div class="button-group">
+                        <button type="button" class="btn-save">Сохранить изменения</button>
+                    </div>
+                </form>
+            </div>
+
         </section>
     </main>
 
@@ -248,8 +304,19 @@
     });
 
     list.addEventListener('case-edit', (e) => {
-        console.log('Открыть дело:', e.detail.number);
+        switchTab('edit-case');
     });
+
+    document.getElementById('backToCases').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('cases');
+    });
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.toggle('active', el.dataset.tab === tab);
+        });
+    }
 
     const shedules = [
         {
@@ -314,4 +381,4 @@
     });
 </script>
 
-</html>
+</html>>

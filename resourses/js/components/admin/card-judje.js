@@ -31,12 +31,11 @@ class CardAdminJudje extends HTMLElement {
                 }       
             
                 .cardCase {
-                background-color: #FFFFFF;
-                border-radius: 12px;
-                padding: 20px 25px;
-                margin-bottom: 20px;
-                box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.15);
-                cursor: pointer;
+                    background-color: #FFFFFF;
+                    border-radius: 12px;
+                    padding: 20px 25px;
+                    margin-bottom: 20px;
+                    box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.15);
                 }
 
                 .content-judje {
@@ -94,6 +93,7 @@ class CardAdminJudje extends HTMLElement {
                     border-radius: 5px;
                     cursor: pointer;
                     font-size: 14px;
+                    font-family: 'Montserrat', sans-serif;
                     font-weight: 500;
                     transition: background-color 0.3s;
                 }
