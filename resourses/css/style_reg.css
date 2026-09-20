@@ -165,6 +165,16 @@
             color: #8E8E93;
         }
 
+        .error-box {
+            background: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
         /* Стили для модального окна */
         .modal-overlay {
             display: none;

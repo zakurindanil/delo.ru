@@ -45,6 +45,8 @@
                 </label>
             </div>
 
+            <div id="errorBox" class="error-box" style="display:none;"></div>
+
             <div class="button-group">
                 <button type="submit" class="btn-register">СОЗДАТЬ АККАУНТ</button>
             </div>
@@ -171,7 +173,9 @@
                 alert('Аккаунт создан!');
                 window.location.href = 'login.html';
             } else {
-                alert('Ошибка: ' + json.error);
+                const box = document.getElementById('errorBox');
+                box.textContent = json.error;
+                box.style.display = 'block';
             }
         });
     </script>

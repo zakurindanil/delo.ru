@@ -6,10 +6,10 @@
 
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $fio = $data['fio'];
-    $email = $data['email'];
-    $phone = $data['phone'];
-    $password = $data['password'];
+    $fio = trim($data['fio'] ?? '');
+    $email = trim($data['email'] ?? '');
+    $phone = trim($data['phone'] ?? '');
+    $password = $data['password'] ?? '';
 
     if (!$fio || !$email || !$password) {
         echo json_encode(['ok' => false, 'error' => 'Заполните все поля']);
