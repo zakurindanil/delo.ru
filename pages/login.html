@@ -16,16 +16,18 @@
         <form id="loginForm">
             <div class="form-group">
                 <label for="login">Логин (Email)</label>
-                <input type="text" id="login" name="login" value="Заявитель">
+                <input type="email" id="login" name="login">
             </div>
 
             <div class="form-group">
                 <label for="password">Пароль</label>
-                <input type="password" id="password" name="password" value="1234">
+                <input type="password" id="password" name="password">
             </div>
 
+            <div id="errorBox" class="error-box" style="display:none;"></div>
+
             <div class="button-group">
-                <button type="button" class="btn-login" onclick="window.location.href='applicant_main.html'">ВХОД</button>
+                <button type="submit" class="btn-login">ВХОД</button>
             </div>
 
             <div class="links">
@@ -57,5 +59,40 @@
             <p>©2026 ДЕЛО.РУ | Все права защищены</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                login: document.getElementById('login').value,
+                password: document.getElementById('password').value
+            };
+
+            const res = await fetch('../api/login_form.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const json = await res.json();
+
+            if (json.ok) {
+                if (json.role === 'applicant') {
+                    window.location.href = 'applicant_main.html';
+                } else if (json.role === 'admin') {
+                    window.location.href = 'admin_main.html'
+                } else if (json.role === 'judge') {
+                    window.location.href = 'judge_main.html'
+                } else {
+                    alert('Неизвестная роль!')
+                }
+            } else {
+                const box = document.getElementById('errorBox');
+                box.textContent = json.error;
+                box.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -16,6 +16,20 @@
         exit;
     }
 
+    if (!preg_match('/^[А-Яа-яЁёA-Za-z\s\-]+$/u', $fio)) {
+        echo json_encode(['ok'=> false, 'error' => 'ФИО содержит недопустимые символы']);
+        exit;
+    }
+
+    if ($phone && !preg_match('/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/', $phone)) {
+        echo json_encode(['ok'=> false, 'error' => 'Телефон в формате +7 (999) 123-45-67']);
+        exit;
+    }
+
+    if (strlen($phone) < 8) {
+        echo json_encode(['ok'=> false, 'error' => 'Пароль минимум 8 символов']);
+    }
+
     $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
