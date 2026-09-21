@@ -1,4 +1,5 @@
 <?php
+    session_start();
     header("Content-Type: application/json");
 
     require 'config.php';
@@ -27,9 +28,14 @@
         exit;
     }
 
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['role'] = $user['role'];
+    $_SESSION['fio'] = $user['fio'];
+
     echo json_encode([
         'ok' => true,
-        'user' => $user['id'],
+        'user_id' => $user['id'],
         'role' => $user['role'],
         'fio' => $user['fio']
     ]);
+

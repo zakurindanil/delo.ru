@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="header-left">
-            <a href="login.html" target="_blank">
+            <a href="login.html">
                 <img src="../resourses/img/exit.png" alt="Выход">
             </a>
             <label for="title">ДЕЛО.РУ</label>
@@ -18,10 +18,10 @@
     
         <div class="header-right">
             <div class="name-role">
-                <label for="username" class="username">Иванов И.И.</label>
-                <label for="role" class="role">Заявитель</label>
+                <label class="username">Иванов И.И.</label>
+                <label class="role">Заявитель</label>
             </div>
-            <a href="profile.html" target="_blank">
+            <a href="profile.html">
                 <img src="../resourses/img/icon_user_light.png" alt="Профиль">
             </a>
         </div>
@@ -79,37 +79,21 @@
                 <form action="" id="profileForm">
                     <div class="form-group">
                         <label>Тип заявления</label>
-                        <select name="type">
+                        <select name="type" id="typeSelect">
                             <option value="" disabled selected hidden>Выберите тип</option>
-                            <option value="civil">Гражданское</option>
-                            <option value="labor">Трудовое</option>
-                            <option value="admin">Административное</option>
-                            <option value="criminal">Уголовное</option>
-                            <option value="family">Семейное</option>
-                            <option value="inherit">Наследственное</option>
-                            <option value="land">Земельное</option>
-                            <option value="tax">Налоговое</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Подтип заявления</label>
-                        <select name="subType">
+                        <select name="subType" id="subtypeSelect">
                             <option value="" disabled selected hidden>Выберите подтип</option>
-                            <option value="consumer">Защита прав потребителя</option>
-                            <option value="damage">Возмещение ущерба</option>
-                            <option value="restore">Восстановление на работе</option>
-                            <option value="salary">Взыскание зарплаты</option>
-                            <option value="divorce">Расторжение брака</option>
-                            <option value="alimony">Взыскание алиментов</option>
-                            <option value="property">Раздел имущества</option>
-                            <option value="dispute">Спор о границах участка</option>
                         </select>
                     </div>
                 
                     <div class="form-group">
                         <label>Краткое описание дела</label>
-                        <textarea type="tel" id="phone" name="phone" required></textarea>
+                        <textarea required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -137,29 +121,13 @@
                 <form class="edit-form">
                     <div class="form-group">
                         <label>Тип заявления</label>
-                        <select id="editType" name="editType">
-                            <option value="Гражданское">Гражданское</option>
-                            <option value="Трудовое">Трудовое</option>
-                            <option value="Административное">Административное</option>
-                            <option value="Уголовное">Уголовное</option>
-                            <option value="Семейное">Семейное</option>
-                            <option value="Наследственное">Наследственное</option>
-                            <option value="Земельное">Земельное</option>
-                            <option value="Налоговое">Налоговое</option>
+                        <select id="typeSelect" name="editType">
                         </select>
                     </div>
                 
                     <div class="form-group">
                         <label>Подтип заявления</label>
-                        <select id="editSubType" name="editSubType">
-                            <option value="Защита прав потребителя">Защита прав потребителя</option>
-                            <option value="Возмещение ущерба">Возмещение ущерба</option>
-                            <option value="Восстановление на работе">Восстановление на работе</option>
-                            <option value="Взыскание зарплаты">Взыскание зарплаты</option>
-                            <option value="Расторжение брака">Расторжение брака</option>
-                            <option value="Взыскание алиментов">Взыскание алиментов</option>
-                            <option value="Раздел имущества">Раздел имущества</option>
-                            <option value="Спор о границах участка">Спор о границах участка</option>
+                        <select id="subtypeSelect" name="editSubType">
                         </select>
                     </div>
                 
@@ -223,10 +191,50 @@
                 item.querySelector('input[type="radio"]').checked = true;
             });
         });
+
+
+        // Получение типов и подтипов из БД
+        let allSubTypes = [];
+
+        async function loadTypes() {
+            const res = await fetch('../api/applicant/submit_application.php');
+            const data = await res.json();
+
+            const typeSelect = document.getElementById('typeSelect');
+            data.types.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.textContent = t.name;
+                typeSelect.appendChild(opt);
+            });
+
+            allSubTypes = data.subtypes;
+        }
+
+        // Фильтрация подтипов по типу
+        const typeSelect = document.getElementById('typeSelect');
+        const subtypeSelect = document.getElementById('subtypeSelect');
+
+        typeSelect.addEventListener('change', () => {
+            const typeId = typeSelect.value;
+
+            subtypeSelect.innerHTML = '<option value="" disabled selected hidden>Выберите подтип</option>'
+
+            allSubTypes.filter(s => s.type_id == typeId)
+                .forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    subtypeSelect.appendChild(opt);
+                });
+        });
+
+        loadTypes();
     </script>
 
 </body>
 
+<script src="../resourses/js/session.js"></script>
 <script src="../resourses/js/components/applicant/case-card.js"></script>
 <script src="../resourses/js/components/applicant/case-shedule.js"></script>
 
