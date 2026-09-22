@@ -79,11 +79,11 @@
 
             if (json.ok) {
                 if (json.role === 'applicant') {
-                    window.location.href = 'applicant_main.html';
+                    window.location.href = '../pages/applicant_main.html';
                 } else if (json.role === 'admin') {
-                    window.location.href = 'admin_main.html'
+                    window.location.href = '../pages/admin_main.html'
                 } else if (json.role === 'judge') {
-                    window.location.href = 'judge_main.html'
+                    window.location.href = '../pages/judge_main.html'
                 } else {
                     alert('Неизвестная роль!')
                 }
