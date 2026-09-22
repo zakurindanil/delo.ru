@@ -175,17 +175,20 @@
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            const avatar = document.getElementById('avatarInput').files[0];
+            if (!avatar) {
+                const box = document.getElementById('errorBox');
+                box.textContent = 'Выберите аватар';
+                box.style.display = 'block';
+                return;
+            }
+
             const data = new FormData();
 
-            data.append('fio', document.getElementById('fullName').value);
+            data.append('fio', document.getElementById('fio').value);
             data.append('email', document.getElementById('email').value);
             data.append('phone', document.getElementById('phone').value);
             data.append('password', document.getElementById('password').value);
-
-            const avatar = document.getElementById('avatarInput').files[0];
-            if (avatar) {
-                data.append('avatar', avatar);
-            }
 
             const res = await fetch('../api/registration_form.php', {
                 method: 'POST',
