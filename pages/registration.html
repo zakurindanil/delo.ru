@@ -14,7 +14,16 @@
         </div>
 
         <div class="avatar-container">
-            <img src="../resourses/img/icon_user.png">
+            <img src="../resourses/img/icon_user.png" 
+                 alt="Аватар" 
+                 class="avatar" 
+                 id="avatarPreview"
+                 onclick="document.getElementById('avatarInput').click()">
+            <input type="file" 
+                   id="avatarInput" 
+                   name="avatar" 
+                   accept="image/*" 
+                   hidden>
         </div>
 
         <form id="registrationForm">
@@ -151,20 +160,36 @@
 
     <!--Отправка формы регистрации-->
     <script>
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('avatarPreview').src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+        
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const data = {
-                fio: document.getElementById('fio').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                password: document.getElementById('password').value
-            };
+            const data = new FormData();
+
+            data.append('fio', document.getElementById('fullName').value);
+            data.append('email', document.getElementById('email').value);
+            data.append('phone', document.getElementById('phone').value);
+            data.append('password', document.getElementById('password').value);
+
+            const avatar = document.getElementById('avatarInput').files[0];
+            if (avatar) {
+                data.append('avatar', avatar);
+            }
 
             const res = await fetch('../api/registration_form.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: data
             });
 
             const json = await res.json();

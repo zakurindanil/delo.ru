@@ -175,6 +175,22 @@
             font-size: 14px;
         }
 
+        /* Аватар профиля */
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+            border: 2px solid #E99949;
+        }
+
+        .avatar:hover {
+            opacity: 0.8;
+        }
+
         /* Стили для модального окна */
         .modal-overlay {
             display: none;

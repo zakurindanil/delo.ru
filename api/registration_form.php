@@ -4,12 +4,24 @@
 
     require 'config.php';
 
-    $data = json_decode(file_get_contents('php://input'), true);
+    $fio = trim($_POST['fio'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    $fio = trim($data['fio'] ?? '');
-    $email = trim($data['email'] ?? '');
-    $phone = trim($data['phone'] ?? '');
-    $password = $data['password'] ?? '';
+    // Аватар
+    $avatarPath = null;
+
+    if (!empty($_FILES['avatar']['name'])) {
+        $file = $_FILES['avatar'];
+
+        if (strpos($file['type'],'image/') !== 0) {
+            echo json_encode(['ok' => false, 'error' => 'Только изображения']);
+            exit;
+        }
+
+        
+    }
 
     if (!$fio || !$email || !$password) {
         echo json_encode(['ok' => false, 'error' => 'Заполните все поля']);
