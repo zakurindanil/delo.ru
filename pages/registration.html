@@ -189,6 +189,7 @@
             data.append('email', document.getElementById('email').value);
             data.append('phone', document.getElementById('phone').value);
             data.append('password', document.getElementById('password').value);
+            data.append('avatar', avatar);
 
             const res = await fetch('../api/registration_form.php', {
                 method: 'POST',
