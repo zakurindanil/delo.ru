@@ -10,14 +10,9 @@
 
     require 'config.php';
 
-    $stmt = $pdo->prepare('SELECT fio, role, email, phone FROM users WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT fio, role, email, phone, avatar FROM users WHERE id = ?');
     $stmt->execute([$_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $role = [
-        'applicant' => 'Заявитель',
-        'judge'     => 'Судья',
-        'admin'     => 'Администратор'
-    ][$user['role']] ?? '';
 
     echo json_encode(['ok' => true, 'user' => $user]);

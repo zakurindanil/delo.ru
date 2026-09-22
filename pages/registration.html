@@ -26,7 +26,7 @@
                    hidden>
         </div>
 
-        <form id="registrationForm">
+        <form id="registrationForm" novalidate>
             <div class="form-group">
                 <label for="fullName">ФИО</label>
                 <input type="text" id="fio" name="fio" required>
@@ -189,6 +189,7 @@
             data.append('email', document.getElementById('email').value);
             data.append('phone', document.getElementById('phone').value);
             data.append('password', document.getElementById('password').value);
+            data.append('privacy', document.getElementById('privacy').checked ? 'on' : '');
             data.append('avatar', avatar);
 
             const res = await fetch('../api/registration_form.php', {

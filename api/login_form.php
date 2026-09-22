@@ -32,10 +32,5 @@
     $_SESSION['role'] = $user['role'];
     $_SESSION['fio'] = $user['fio'];
 
-    echo json_encode([
-        'ok' => true,
-        'user_id' => $user['id'],
-        'role' => $user['role'],
-        'fio' => $user['fio']
-    ]);
+    echo json_encode(['ok' => true, 'role' => $user['role']]);
 

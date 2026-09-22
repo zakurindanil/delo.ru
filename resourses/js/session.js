@@ -19,17 +19,21 @@ async function loadUser() {
     document.querySelectorAll('.username').forEach(x => x.textContent = user.fio);
     document.querySelectorAll('.role').forEach(x => x.textContent = role);
 
+    document.querySelectorAll('.userAvatar').forEach(img => {
+        if (user.avatar) img.src = user.avatar;
+    }); 
+
     const leftName = document.querySelector('.left-content-panel .username')
     const leftRole = document.querySelector('.left-content-panel .role');
     if (leftName) leftName.textContent = user.fio;
     if (leftRole) leftRole.textContent = role;
 
     const fullName = document.getElementById('fullName');
-    const email    = document.getElementById('email');
-    const phone    = document.getElementById('phone');
+    const email = document.getElementById('email');
+    const phone = document.getElementById('phone');
     if (fullName) fullName.value = user.fio;
-    if (email)    email.value    = user.email;
-    if (phone)    phone.value    = user.phone;
+    if (email) email.value = user.email;
+    if (phone) phone.value = user.phone;
 }
 
 loadUser();

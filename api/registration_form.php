@@ -6,14 +6,22 @@
     $email    = trim($_POST['email'] ?? '');
     $phone    = trim($_POST['phone'] ?? '');
     $password = $_POST['password'] ?? '';
-    
-    if (!$fio || !$email || !$password) {
-        echo json_encode(['ok' => false, 'error' => 'Заполните все поля']);
-        exit;
-    }
+    $privacy = $_POST['privacy'] ?? '';
 
     if (!preg_match('/^[А-Яа-яЁёA-Za-z\s\-]+$/u', $fio)) {
         echo json_encode(['ok' => false, 'error' => 'ФИО содержит недопустимые символы']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
+    $stmt->execute([$email]);
+    if ($stmt->fetch()) {
+        echo json_encode(['ok' => false, 'error' => 'Email уже занят']);
+        exit;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['ok' => false, 'error' => 'Некорректный email']);
         exit;
     }
 
@@ -27,10 +35,8 @@
         exit;
     }
 
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
-    $stmt->execute([$email]);
-    if ($stmt->fetch()) {
-        echo json_encode(['ok' => false, 'error' => 'Email уже занят']);
+    if ($privacy !== 'on') {
+        echo json_encode(['ok' => false, 'error' => 'Согласитесь с политикой конфиденциальности']);
         exit;
     }
 
