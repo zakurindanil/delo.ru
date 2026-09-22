@@ -93,21 +93,22 @@
                 
                     <div class="form-group">
                         <label>Краткое описание дела</label>
-                        <textarea required></textarea>
+                        <textarea id="comment" required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Прикрепить файлы</label>
                         <div class="choose-img-group">
-                            <button class="btn-img">
-                                <img src="../resourses/img/pin.png"/>
+                            <button type="button" class="btn-img" onclick="document.getElementById('applicationFiles').click()">
+                                <img src="../resourses/img/pin.png" alt="Прикрепить"/>
                             </button>
-                            <label>Файлы не выбраны</label>
+                            <label id="filesLabel">Файлы не выбраны</label>
+                            <input type="file" id="applicationFiles" name="files[]" multiple hidden>
                         </div>
                     </div>
 
                     <div class="button-group">
-                        <button type="button" class="btn-save">Отправить заявление</button>
+                        <button type="button" class="btn-save" id="submitBtn">Отправить заявление</button>
                     </div>
                 </form>
             </div>
@@ -239,92 +240,68 @@
 <script src="../resourses/js/components/applicant/case-shedule.js"></script>
 
 <script>
-    const cases = [
-        {
-            number: '001-2026',
-            status: 'В работе',
-            statusColor: '#E99949',
-            type: 'Гражданское',
-            subType: 'Защита прав потребителя',
-            comment: 'Назначено предварительное заседание на 15.10.2026'
-        },
-        {
-            number: '002-2026',
-            status: 'Новое',
-            statusColor: '#4CAF50',
-            type: 'Трудовое',
-            subType: 'Восстановление на работе',
-            comment: 'Заявление принято, ожидает рассмотрения'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        }
-    ];
+    async function loadCases() {
+        const res = await fetch('../api/applicant/submit_application.php?action=get_cases');
+        const json = await res.json();
 
-    const list = document.getElementById('casesList');
+        const list = document.getElementById('casesList');
+        list.innerHTML = '';
 
-    cases.forEach(c => {
-        const card = document.createElement('case-card');
-        card.setAttribute('number', c.number);
-        card.setAttribute('status', c.status);
-        card.setAttribute('statusColor', c.statusColor);
-        card.setAttribute('type', c.type);
-        card.setAttribute('subType', c.subType);
-        card.setAttribute('comment', c.comment);
-        list.appendChild(card);
-    });
-
-    list.addEventListener('case-edit', (e) => {
-        switchTab('edit-case');
-    });
-
-    document.getElementById('backToCases').addEventListener('click', (e) => {
-        e.preventDefault();
-        switchTab('cases');
-    });
-
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-content').forEach(el => {
-            el.classList.toggle('active', el.dataset.tab === tab);
+        json.cases.forEach(c => {
+            const card = document.createElement('case-card');
+            card.setAttribute('number', c.number);
+            card.setAttribute('status', c.status);
+            card.setAttribute('statusColor', c.statusColor);
+            card.setAttribute('type', c.type);
+            card.setAttribute('subType', c.subType);
+            card.setAttribute('comment', c.comment);
+            list.appendChild(card);
         });
     }
+
+    loadCases();
+
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+        const type_id = document.getElementById('typeSelect').value;
+        const subtype_id = document.getElementById('subtypeSelect').value;
+        const comment = document.getElementById('comment').value;
+
+        const data = new FormData();
+        data.append('action', 'submit');
+        data.append('type_id', type_id);
+        data.append('subtype_id', subtype_id);
+        data.append('comment', comment);
+
+        const files = document.getElementById('applicationFiles').files;
+        for (let i = 0; i < files.length; i++) {
+           data.append('files[]', files[i]);
+        }
+
+        const res  = await fetch('../api/applicant/submit_application.php', {
+            method: 'POST',
+            body: data
+        });
+
+        const json = await res.json();
+
+        if (json.ok) {
+            alert('Заявление отправлено');
+            loadCases();
+
+            document.getElementById('typeSelect').value = '';
+            document.getElementById('subtypeSelect').innerHTML =
+                '<option value="" disabled selected hidden>Выберите подтип</option>';
+            document.getElementById('applicationComment').value = '';
+        } else {
+            alert('Ошибка: ' + json.error);
+        }
+    });
+
+    document.getElementById('applicationFiles').addEventListener('change', function() {
+        const count = this.files.length;
+        document.getElementById('filesLabel').textContent =
+            count > 0 ? `Выбрано файлов: ${count}` : 'Файлы не выбраны';
+    });
 
     const shedules = [
         {
