@@ -20,7 +20,15 @@
             exit;
         }
 
-        
+        $uploadDir = __DIR__ . '/../resourses/img/avatars/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $fileName = uniqid('avatar_') . '.' . $ext;
+
+        move_uploaded_file($file['tmp_name'], $uploadDir . $fileName);
+
+        $avatarPath = '../resourses/img/avatars/' . $fileName;
     }
 
     if (!$fio || !$email || !$password) {
@@ -55,6 +63,6 @@
         INSERT INTO users (role, fio, email, phone, password_hash, avatar, created_account)
         VALUES ('applicant', ?, ?, ?, ?, ?, NOW())
     ");
-    $stmt->execute([$fio, $email, $phone, $hash, null]);
+    $stmt->execute([$fio, $email, $phone, $hash, $avatarPath]);
     
     echo json_encode(['ok' => true, 'user_id' => $pdo->lastInsertId()]);
