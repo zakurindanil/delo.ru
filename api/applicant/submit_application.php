@@ -64,14 +64,9 @@
     }
 
     if ($action === 'get_cases') {
-        if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['ok' => false, 'error' => 'Не авторизован']);
-            exit;
-        }
-
         $stmt = $pdo->prepare("
             SELECT
-                c.id       AS number,     -- ← вот тут id вместо uid
+                c.id       AS number,
                 s.name     AS status,
                 s.color    AS statusColor,
                 t.name     AS type,
@@ -88,6 +83,92 @@
         $cases = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode(['ok' => true, 'cases' => $cases]);
+        exit;
+    }
+
+    if ($action === 'get_case') {
+
+        $caseId = (int)($_GET['id'] ?? 0);
+
+        $stmt = $pdo->prepare("
+            SELECT id AS number, type_id, subtype_id, comment
+            FROM cases
+            WHERE id = ? AND applicant_id = ?
+        ");
+        $stmt->execute([$caseId, $_SESSION['user_id']]);
+        $case = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$case) {
+            echo json_encode(['ok' => false, 'error' => 'Дело не найдено']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("
+            SELECT id, file_name, file_path, file_size
+            FROM documents
+            WHERE case_id = ?
+            ORDER BY uploaded_at
+        ");
+        $stmt->execute([$caseId]);
+        $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['ok' => true, 'case' => $case, 'files' => $files]);
+        exit;
+    }
+
+    if ($action === 'update_case') {
+
+        $case_id    = (int)($_POST['case_id']    ?? 0);
+        $type_id    = (int)($_POST['type_id']    ?? 0);
+        $subtype_id = (int)($_POST['subtype_id'] ?? 0);
+        $comment    = trim($_POST['comment']     ?? '');
+
+        if (!$type_id || !$subtype_id || !$comment) {
+            echo json_encode(['ok' => false, 'error' => 'Заполните все поля']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("SELECT id FROM cases WHERE id = ? AND applicant_id = ?");
+        $stmt->execute([$case_id, $_SESSION['user_id']]);
+        if (!$stmt->fetch()) {
+            echo json_encode(['ok' => false, 'error' => 'Дело не найдено']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("
+            UPDATE cases SET type_id = ?, subtype_id = ?, comment = ? WHERE id = ?
+        ");
+        $stmt->execute([$type_id, $subtype_id, $comment, $case_id]);
+
+        if (!empty($_FILES['files']['name'][0])) {
+            $uploadDir = __DIR__ . '/../../resourses/files/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+            $files = $_FILES['files'];
+
+            for ($i = 0; $i < count($files['name']); $i++) {
+                if ($files['error'][$i] !== UPLOAD_ERR_OK) continue;
+
+                $ext = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
+                $fileName = uniqid('doc_') . '.' . $ext;
+
+                if (move_uploaded_file($files['tmp_name'][$i], $uploadDir . $fileName)) {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO documents (case_id, file_name, file_path, file_size, uploaded_by)
+                        VALUES (?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $case_id,
+                        $files['name'][$i],
+                        'resourses/files/' . $fileName,
+                        $files['size'][$i],
+                        $_SESSION['user_id']
+                    ]);
+                }
+            }
+        }
+
+        echo json_encode(['ok' => true]);
         exit;
     }
 

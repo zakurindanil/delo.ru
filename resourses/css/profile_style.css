@@ -128,7 +128,7 @@ header {
     margin-bottom: 45px;
 }
 
-.left-content-panel .btn-to-main {
+.left-content-panel #backBtn {
     width: 201px;
     padding: 10px 0;
     background-color: #FFFFFF;
@@ -141,7 +141,7 @@ header {
     transition: background-color 0.3s;
 }
 
-.btn-to-main:hover {
+#backBtn:hover {
     background-color: #dfdfdf;
 }
 
@@ -228,6 +228,32 @@ header {
 
 .btn-save:hover {
     background-color: #d88a3d;
+}
+
+.error-box {
+    background: #fdecea;
+    color: #b71c1c;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Выбор аватара профиля */
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: opacity 0.3s;
+    border: 2px solid #E99949;
+}
+
+.avatar:hover {
+    opacity: 0.8;
 }
 
 /*Футер*/

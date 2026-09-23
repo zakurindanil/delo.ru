@@ -33,36 +33,56 @@
                     <img src="../resourses/img/icon_user_light.png" alt="Аватар" class="userAvatar">
                     <span class="role">Заявитель</span>
                     <span class="username">Иванов Иван</span>
-                    <button type="button" class="btn-to-main" onclick="window.location.href='applicant_main.html'">Назад в меню</button>
+                    <button id="backBtn">Назад в меню</button>
                 </div>
             </div>
             <div class="right-panel">
                 <div class="right-content-panel">
                     <h2>Личный кабинет заявителя</h2>
                     <p>Здесь вы можете дополнить или изменить данные вашего профиля.</p>
-                    <form action="" id="profileForm">
+                    <form id="profileForm">
                         <div class="form-group">
                             <label for="fullName">ФИО</label>
-                            <input type="text" id="fullName" name="fullName" required>
+                            <input type="text" id="fullName" name="fio">
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email">
                         </div>
                     
                         <div class="form-group">
                             <label for="phone">Телефон</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <input type="tel" id="phone" name="phone">
                         </div>
                     
                         <div class="form-group">
-                            <label for="password">Пароль</label>
-                            <input type="password" id="password" name="password" required>
+                            <label for="password">Новый пароль</label>
+                            <input type="password" id="password" name="password" placeholder="Новый пароль (оставьте пустым, если не хотите менять пароль)">
                         </div>
 
+                        <div class="form-group">
+                            <label>Фото профиля</label>
+                            <div class="choose-img-group">
+                                <div class="avatar-container">
+                                    <img src="../resourses/img/icon_user.png" 
+                                         alt="Аватар" 
+                                         class="avatar userAvatar" 
+                                         id="avatarPreview"
+                                         onclick="document.getElementById('avatarInput').click()">
+                                    <input type="file" 
+                                           id="avatarInput" 
+                                           name="avatar" 
+                                           accept="image/*" 
+                                           hidden>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="errorBox" class="error-box" style="display:none;"></div>
+
                         <div class="button-group">
-                            <button type="button" class="btn-save" onclick="window.location.href='applicant_main.html'">Сохранить изменения</button>
+                            <button type="submit" class="btn-save">Сохранить изменения</button>
                         </div>
                     </form>
                 </div>
@@ -89,8 +109,70 @@
         </div>
     </footer>
 
+    <script src="../resourses/js/session.js"></script>
+
+    <script>
+        document.getElementById('backBtn').addEventListener('click', async () => {
+            const res = await fetch('../api/user_data.php');
+            const json = await res.json();
+
+            if (!json.ok) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const pages = {
+                applicant: 'applicant_main.html',
+                judge: 'judge_main.html',
+                admin: 'admin_main.html'
+            };
+            window.location.href = pages[json.user.role] || 'login.html';
+        });
+
+        document.getElementById('avatarInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('avatarPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const box = document.getElementById('errorBox');
+            box.style.display = 'none';
+
+            const data = new FormData();
+            data.append('fio', document.getElementById('fullName').value);
+            data.append('email', document.getElementById('email').value);
+            data.append('phone', document.getElementById('phone').value);
+            data.append('password', document.getElementById('password').value);
+
+            const avatar = document.getElementById('avatarInput').files[0];
+            if (avatar) data.append('avatar', avatar);
+
+            const res  = await fetch('../api/update_profile.php', {
+                method: 'POST',
+                body: data
+            });
+
+            const json = await res.json();
+
+            if (json.ok) {
+                alert('Профиль обновлён!');
+                location.reload();
+            } else {
+                box.textContent = json.error;
+                box.style.display = 'block';
+            }
+        });
+    </script>
+
 </body>
 
-<script src="../resourses/js/session.js"></script>
 
 </html>

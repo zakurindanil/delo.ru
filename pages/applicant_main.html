@@ -107,6 +107,8 @@
                         </div>
                     </div>
 
+                    <div id="errorBox" class="error-box" style="display:none;"></div>
+
                     <div class="button-group">
                         <button type="button" class="btn-save" id="submitBtn">Отправить заявление</button>
                     </div>
@@ -122,13 +124,13 @@
                 <form class="edit-form">
                     <div class="form-group">
                         <label>Тип заявления</label>
-                        <select id="typeSelect" name="editType">
+                        <select id="editTypeSelect" name="editType">
                         </select>
                     </div>
                 
                     <div class="form-group">
                         <label>Подтип заявления</label>
-                        <select id="subtypeSelect" name="editSubType">
+                        <select id="editSubtypeSelect" name="editSubType">
                         </select>
                     </div>
                 
@@ -138,17 +140,23 @@
                     </div>
                 
                     <div class="form-group">
-                        <label>Прикрепить файлы</label>
+                        <label>Файлы дела</label>
+                        <div id="editFilesList" class="files-list"></div>
+
+                        <label>Прикрепить ещё</label>
                         <div class="choose-img-group">
-                            <button type="button" class="btn-img">
+                            <button type="button" class="btn-img" onclick="document.getElementById('editFiles').click()">
                                 <img src="../resourses/img/pin.png" alt="Прикрепить"/>
                             </button>
-                            <label>Файлы не выбраны</label>
+                            <label id="editFilesLabel">Файлы не выбраны</label>
+                            <input type="file" id="editFiles" name="files[]" multiple hidden>
                         </div>
                     </div>
+
+                    <div id="editErrorBox" class="error-box" style="display:none;"></div>
                 
                     <div class="button-group">
-                        <button type="button" class="btn-save">Сохранить изменения</button>
+                        <button type="button" class="btn-save" id="saveEditBtn">Сохранить изменения</button>
                     </div>
                 </form>
             </div>
@@ -200,6 +208,8 @@
         async function loadTypes() {
             const res = await fetch('../api/applicant/submit_application.php');
             const data = await res.json();
+            
+            allSubTypes = data.subtypes;
 
             const typeSelect = document.getElementById('typeSelect');
             data.types.forEach(t => {
@@ -209,17 +219,37 @@
                 typeSelect.appendChild(opt);
             });
 
-            allSubTypes = data.subtypes;
+            const editTypeSelect = document.getElementById('editTypeSelect');
+            data.types.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.textContent = t.name;
+                editTypeSelect.appendChild(opt);
+            });
+
         }
 
         // Фильтрация подтипов по типу
-        const typeSelect = document.getElementById('typeSelect');
-        const subtypeSelect = document.getElementById('subtypeSelect');
+        document.getElementById('typeSelect').addEventListener('change', function() {
+            const typeId = this.value;
+            const subtypeSelect = document.getElementById('subtypeSelect');
 
-        typeSelect.addEventListener('change', () => {
-            const typeId = typeSelect.value;
+            subtypeSelect.innerHTML = '<option value="" disabled selected hidden>Выберите подтип</option>';
 
-            subtypeSelect.innerHTML = '<option value="" disabled selected hidden>Выберите подтип</option>'
+            allSubTypes.filter(s => s.type_id == typeId)
+                .forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    subtypeSelect.appendChild(opt);
+                });
+        });
+
+        document.getElementById('editTypeSelect').addEventListener('change', function() {
+            const typeId = this.value;
+            const subtypeSelect = document.getElementById('editSubtypeSelect');
+
+            subtypeSelect.innerHTML = '<option value="" disabled selected hidden>Выберите подтип</option>';
 
             allSubTypes.filter(s => s.type_id == typeId)
                 .forEach(s => {
@@ -261,10 +291,71 @@
 
     loadCases();
 
+    let currentCaseId = null;
+
+    document.getElementById('casesList').addEventListener('case-edit', async (e) => {
+        const caseId = e.detail.number;
+        currentCaseId = caseId;
+
+        const res  = await fetch(`../api/applicant/submit_application.php?action=get_case&id=${caseId}`);
+        const json = await res.json();
+
+        if (!json.ok) {
+            alert('Не удалось загрузить дело');
+            return;
+        }
+
+        const c = json.case;
+    
+        document.getElementById('editCaseNumber').textContent = `Судебное дело № ${c.number}`;
+
+        const editType = document.getElementById('editTypeSelect');
+        editType.value = c.type_id;
+
+        const editSubtype = document.getElementById('editSubtypeSelect');
+        editSubtype.innerHTML = '<option value="" disabled selected hidden>Выберите подтип</option>';
+
+        allSubTypes.filter(s => s.type_id == c.type_id)
+            .forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                editSubtype.appendChild(opt);
+            });
+
+        editSubtype.value = c.subtype_id;
+
+        document.getElementById('editComment').value = c.comment;
+
+        const filesList = document.getElementById('editFilesList');
+        filesList.innerHTML = '';
+
+        if (json.files.length === 0) {
+            filesList.innerHTML = '<p>Файлы не прикреплены</p>';
+        } else {
+            json.files.forEach(f => {
+                const a = document.createElement('a');
+                a.href = '../' + f.file_path;
+                a.target = '_blank';
+                a.className = 'file-link';
+                a.textContent = f.file_name;
+                filesList.appendChild(a);
+            });
+        }
+
+        document.getElementById('editFiles').value = '';
+        document.getElementById('editFilesLabel').textContent = 'Файлы не выбраны';
+
+        switchTab('edit-case');
+    });
+
     document.getElementById('submitBtn').addEventListener('click', async () => {
         const type_id = document.getElementById('typeSelect').value;
         const subtype_id = document.getElementById('subtypeSelect').value;
         const comment = document.getElementById('comment').value;
+
+        const box = document.getElementById('errorBox');
+        box.style.display = 'none'
 
         const data = new FormData();
         data.append('action', 'submit');
@@ -287,13 +378,9 @@
         if (json.ok) {
             alert('Заявление отправлено');
             loadCases();
-
-            document.getElementById('typeSelect').value = '';
-            document.getElementById('subtypeSelect').innerHTML =
-                '<option value="" disabled selected hidden>Выберите подтип</option>';
-            document.getElementById('applicationComment').value = '';
         } else {
-            alert('Ошибка: ' + json.error);
+            box.textContent = json.error;
+            box.style.display = 'block';
         }
     });
 
@@ -301,6 +388,40 @@
         const count = this.files.length;
         document.getElementById('filesLabel').textContent =
             count > 0 ? `Выбрано файлов: ${count}` : 'Файлы не выбраны';
+    });
+
+    document.getElementById('saveEditBtn').addEventListener('click', async () => {
+        const box = document.getElementById('editErrorBox');
+        box.style.display = 'none';
+
+        const type_id = document.getElementById('editTypeSelect').value;
+        const subtype_id = document.getElementById('editSubtypeSelect').value;
+        const comment = document.getElementById('editComment').value.trim();
+
+        const data = new FormData();
+        data.append('action',     'update_case');
+        data.append('case_id',    currentCaseId);
+        data.append('type_id',    type_id);
+        data.append('subtype_id', subtype_id);
+        data.append('comment',    comment);
+        const files = document.getElementById('editFiles').files;
+        for (let i = 0; i < files.length; i++) {
+            data.append('files[]', files[i]);
+        }
+
+        const res  = await fetch('../api/applicant/submit_application.php', {
+            method: 'POST',
+            body: data
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+            loadCases();
+            switchTab('cases');
+        } else {
+            box.textContent = json.error;
+            box.style.display = 'block';
+        }
     });
 
     const shedules = [
@@ -364,6 +485,24 @@
         cardShedule.setAttribute('subType', s.subType);
         list1.appendChild(cardShedule);
     });
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.toggle('active', el.dataset.tab === tab);
+        });
+    }
+
+    document.getElementById('backToCases').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('cases');
+    });
+
+    document.getElementById('editFiles').addEventListener('change', function() {
+        const count = this.files.length;
+        document.getElementById('editFilesLabel').textContent =
+            count > 0 ? `Выбрано файлов: ${count}` : 'Файлы не выбраны';
+    });
+    
 </script>
 
 </html>>
