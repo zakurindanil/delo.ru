@@ -264,121 +264,28 @@
         listNotification.appendChild(cardNotification);
     });
 
-    const judjeCases = [
-        {
-            uid:         '11-2026',
-            status:      'Не назначено',
-            typeCase:    'Исковые заявления о защите семейных прав',
-            subtypeCase: 'Расторжение брака и раздел имущества супругов',
-            applicant:   'Гарилов Сергей Иванович',
-            date:        'Не назначено'
-        },
-        {
-            uid:         '12-2026',
-            status:      'Не назначено',
-            typeCase:    'Гражданское',
-            subtypeCase: 'Защита прав потребителя',
-            applicant:   'Климов Степан Иванович',
-            date:        'Не назначено'
-        },
-        {
-            uid:         '14-2026',
-            status:      'Назначено',
-            typeCase:    'Трудовое',
-            subtypeCase: 'Восстановление на работе',
-            applicant:   'Петрова Анна Сергеевна',
-            date:        '16 сентября 2026 г. в 12:00'
-        },
-        {
-            uid:         '17-2026',
-            status:      'Не назначено',
-            typeCase:    'Административное',
-            subtypeCase: 'Оспаривание штрафа ГИБДД',
-            applicant:   'Сидоров Пётр Алексеевич',
-            date:        'Не назначено'
-        },
-        {
-            uid:         '19-2026',
-            status:      'Назначено',
-            typeCase:    'Наследственное',
-            subtypeCase: 'Раздел имущества между наследниками',
-            applicant:   'Николаева Ольга Дмитриевна',
-            date:        '20 сентября 2026 г. в 10:30'
-        },
-        {
-            uid:         '22-2026',
-            status:      'Не назначено',
-            typeCase:    'Земельное',
-            subtypeCase: 'Спор о границах земельного участка',
-            applicant:   'Морозов Дмитрий Олегович',
-            date:        'Не назначено'
-        },
-        {
-            uid:         '24-2026',
-            status:      'Назначено',
-            typeCase:    'Семейное',
-            subtypeCase: 'Взыскание алиментов на несовершеннолетнего ребёнка',
-            applicant:   'Смирнова Елена Владимировна',
-            date:        '23 сентября 2026 г. в 14:15'
-        },
-        {
-            uid:         '26-2026',
-            status:      'Не назначено',
-            typeCase:    'Налоговое',
-            subtypeCase: 'Оспаривание решения ФНС',
-            applicant:   'ООО «СтройГарант»',
-            date:        'Не назначено'
-        },
-        {
-            uid:         '28-2026',
-            status:      'Назначено',
-            typeCase:    'Гражданское',
-            subtypeCase: 'Возмещение ущерба от залива квартиры',
-            applicant:   'Волков Андрей Николаевич',
-            date:        '25 сентября 2026 г. в 09:45'
-        },
-        {
-            uid:         '31-2026',
-            status:      'Не назначено',
-            typeCase:    'Трудовое',
-            subtypeCase: 'Взыскание задолженности по зарплате',
-            applicant:   'Кузнецов Игорь Петрович',
-            date:        'Не назначено'
-        }
-    ];
+    async function loadJudjeCases() {
+        const res = await fetch('../api/judge/judge_case.php?action=get_cases');
+        const json = await res.json();
 
-    const judjeCaseList = document.getElementById('casesJudjeList');
+        const judjeCaseList = document.getElementById('casesJudjeList');
+        judjeCaseList.innerHTML = '';
 
-    judjeCases.forEach(j => {
-        const cardJudjeCase = document.createElement('card-case-judje');
-        cardJudjeCase.setAttribute('uid', j.uid);
-        cardJudjeCase.setAttribute('status', j.status);
-        cardJudjeCase.setAttribute('typeCase', j.typeCase);
-        cardJudjeCase.setAttribute('subtypeCase', j.subtypeCase);
-        cardJudjeCase.setAttribute('applicant', j.applicant);
-        cardJudjeCase.setAttribute('date', j.date);
-        judjeCaseList.appendChild(cardJudjeCase);
-    });
-
-    judjeCaseList.addEventListener('case-approve', (e) => {
-        const { uid, applicant } = e.detail;
-
-        document.getElementById('appointUid').textContent = `УИД: ДЕЛО-${uid}`;
-        document.getElementById('appointApplicant').textContent = `Заявитель: ${applicant}`;
-
-        switchTab('appoint');
-    });
-
-    document.getElementById('backToCases').addEventListener('click', (e) => {
-        e.preventDefault();
-        switchTab('cases');
-    });
-
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-content').forEach(el => {
-            el.classList.toggle('active', el.dataset.tab === tab);
+        json.cases.forEach(j => {
+            const cardJudjeCase = document.createElement('card-case-judje');
+            cardJudjeCase.setAttribute('id', j.id);
+            cardJudjeCase.setAttribute('status', j.status);
+            cardJudjeCase.setAttribute('typeCase', j.typeCase);
+            cardJudjeCase.setAttribute('subtypeCase', j.subtypeCase);
+            cardJudjeCase.setAttribute('applicant', j.applicant);
+            cardJudjeCase.setAttribute('date', j.date);
+            judjeCaseList.appendChild(cardJudjeCase);
         });
+
     }
+
+    loadJudjeCases();
+
 </script>
 
 </html>

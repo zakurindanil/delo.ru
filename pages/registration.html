@@ -34,17 +34,12 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="tel" id="phone" name="phone" 
-                placeholder="+7 (___) ___-__-__" 
-                maxlength="18" 
-                inputmode="numeric"
-                autocomplete="tel"
-                required>
+                <input type="email" id="email" name="email" required>
             </div>
 
             <div class="form-group">
                 <label for="phone">Телефон</label>
-                <input type="tel" id="phone" name="phone" required>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric" autocomplete="tel" required>
             </div>
 
             <div class="form-group">
@@ -128,18 +123,16 @@
     </div>
     
     <script>
-    // === Автоформатирование телефона +7 (999) 123-45-67 ===
+    // Автоформатирование телефона +7 (999) 123-45-67 ===
     document.addEventListener('DOMContentLoaded', () => {
         const phoneInput = document.getElementById('phone');
 
-        // При фокусе — если пусто, сразу подставляем +7 (
         phoneInput.addEventListener('focus', () => {
             if (!phoneInput.value) {
                 phoneInput.value = '+7 (';
             }
         });
 
-        // При потере фокуса — если ввели только +7 (, очищаем
         phoneInput.addEventListener('blur', () => {
             if (phoneInput.value === '+7 (' || phoneInput.value === '+7') {
                 phoneInput.value = '';
@@ -147,21 +140,16 @@
         });
 
         phoneInput.addEventListener('input', (e) => {
-            // Оставляем только цифры
             let digits = e.target.value.replace(/\D/g, '');
 
-            // Если пользователь начал с 8 — заменяем на 7
             if (digits.startsWith('8')) {
                 digits = '7' + digits.slice(1);
             }
-            // Если не начинается с 7 — добавляем
             if (digits && !digits.startsWith('7')) {
                 digits = '7' + digits;
             }
-            // Ограничиваем 11 цифрами (7 + 10)
             digits = digits.slice(0, 11);
 
-            // Собираем по маске
             let formatted = '';
             if (digits.length > 0) {
                 formatted = '+7';
@@ -182,7 +170,6 @@
             e.target.value = formatted;
         });
 
-        // Разрешаем удалять символы маски (Backspace в конце)
         phoneInput.addEventListener('keydown', (e) => {
             if (e.key === 'Backspace' && /[\s()\-]/.test(phoneInput.value.slice(-1))) {
                 e.preventDefault();

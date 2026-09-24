@@ -1,6 +1,6 @@
 class CardCaseJudge extends HTMLElement {
     static get observedAttributes() {
-        return ['uid', 'status', 'typeCase', 'subtypeCase', 'applicant', 'date'];
+        return ['id', 'status', 'typeCase', 'subtypeCase', 'applicant', 'date'];
     }
 
     constructor() {
@@ -19,7 +19,7 @@ class CardCaseJudge extends HTMLElement {
     }
 
     render() {
-        const uid = this.getAttribute('uid') || '-';
+        const id = this.getAttribute('id') || '-';
         const status = this.getAttribute('status') || 'Не назначено';
         const typeCase = this.getAttribute('typeCase') || '-';
         const subtypeCase = this.getAttribute('subtypeCase') || '-';
@@ -132,7 +132,7 @@ class CardCaseJudge extends HTMLElement {
 
             <div class="content-card">
                 <div class="header-content">
-                    <p class="uid">УИД: ДЕЛО-${uid}</p>
+                    <p class="uid">УИД: ДЕЛО-${id}</p>
                     <div class="status-case" style="background-color: ${statusColor};">
                         <p>${status}</p>
                     </div>
@@ -154,7 +154,7 @@ class CardCaseJudge extends HTMLElement {
                 this.dispatchEvent(new CustomEvent('case-approve', {
                     bubbles: true,
                     composed: true,
-                    detail: { uid, applicant }
+                    detail: { id, applicant }
                 }));
             });
     }
