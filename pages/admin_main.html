@@ -77,13 +77,15 @@
 
                     <div class="form-group">
                         <label>Выберите судью</label>
-                        <select name="judje">
+                        <select name="judje" id="judjeSelect">
                             <option value="" disabled selected hidden>Выберите судью</option>
                         </select>
                     </div>
 
+                    <div id="judjeErrorBox" class="error-box" style="display:none;"></div>
+
                     <div class="button-group">
-                        <button type="button" class="btn-save">Назначить судью</button>
+                        <button type="button" class="btn-save" id="judjeBtn">Назначить судью</button>
                     </div>
                 </form>
             </div>
@@ -129,11 +131,11 @@
                 
                     <div class="decision-row">
                         <label>Написать новый ответ:</label>
-                        <textarea class="decision-textarea" placeholder="Введите текст ответа..."></textarea>
+                        <textarea class="decision-textarea" id="reply" placeholder="Введите текст ответа..."></textarea>
                     </div>
                 
                     <div class="button-group">
-                        <button type="button" class="btn-save">Отправить ответ</button>
+                        <button type="button" class="btn-save" id="sendReply">Отправить ответ</button>
                     </div>
                 </div>
             </div>
@@ -217,270 +219,240 @@
 
 
 <script>
-    const casesApplicant = [
-        {
-            number:   '001-2026',
-            status:   'В работе',
-            type:     'Гражданское',
-            subType:  'Защита прав потребителя',
-            comment:  'Назначено предварительное заседание на 15.10.2026. Стороны уведомлены.',
-            applicant: 'Климов Степан Иванович',
-            email:    'klimov@mail.ru',
-            phone:    '+7 (912) 888-70-54'
-        },
-        {
-            number:   '002-2026',
-            status:   'Новое',
-            type:     'Трудовое',
-            subType:  'Восстановление на работе',
-            comment:  'Заявление принято, ожидает рассмотрения. Назначение судьи в течение 5 дней.',
-            applicant: 'Петрова Анна Сергеевна',
-            email:    'petrova.a@yandex.ru',
-            phone:    '+7 (999) 123-45-67'
-        },
-        {
-            number:   '003-2026',
-            status:   'Закрыто',
-            type:     'Наследственное',
-            subType:  'Раздел имущества между наследниками',
-            comment:  'Решение вступило в законную силу 20.01.2026. Исполнительный лист выдан.',
-            applicant: 'Николаева Ольга Дмитриевна',
-            email:    'nikolaeva.olga@gmail.com',
-            phone:    '+7 (902) 555-11-22'
-        },
-        {
-            number:   '004-2026',
-            status:   'В работе',
-            type:     'Семейное',
-            subType:  'Расторжение брака и раздел имущества',
-            comment:  'Назначена судебная экспертиза. Срок — до 30.11.2026.',
-            applicant: 'Гарилов Сергей Иванович',
-            email:    'garilov.s@mail.ru',
-            phone:    '+7 (912) 444-33-22'
-        },
-        {
-            number:   '005-2026',
-            status:   'Отложено',
-            type:     'Административное',
-            subType:  'Оспаривание штрафа ГИБДД',
-            comment:  'Заседание отложено по ходатайству заявителя. Новая дата — 12.11.2026.',
-            applicant: 'Сидоров Пётр Алексеевич',
-            email:    'sidorov.pa@bk.ru',
-            phone:    '+7 (950) 777-88-99'
-        },
-        {
-            number:   '006-2026',
-            status:   'Новое',
-            type:     'Земельное',
-            subType:  'Спор о границах земельного участка',
-            comment:  'Исковое заявление поступило 10.09.2026. Проводится подготовка к разбирательству.',
-            applicant: 'Морозов Дмитрий Олегович',
-            email:    'morozov.do@mail.ru',
-            phone:    '+7 (908) 222-55-11'
-        },
-        {
-            number:   '007-2026',
-            status:   'В работе',
-            type:     'Налоговое',
-            subType:  'Оспаривание решения ФНС',
-            comment:  'Назначено предварительное слушание на 25.10.2026 в 10:00, зал №3.',
-            applicant: 'ООО «СтройГарант»',
-            email:    'info@stroygarant.ru',
-            phone:    '+7 (342) 220-15-30'
-        },
-        {
-            number:   '008-2026',
-            status:   'Закрыто',
-            type:     'Гражданское',
-            subType:  'Возмещение ущерба от залива квартиры',
-            comment:  'Требования удовлетворены частично. Решение от 15.08.2026 вступило в силу.',
-            applicant: 'Волков Андрей Николаевич',
-            email:    'volkov.an@gmail.com',
-            phone:    '+7 (909) 333-44-55'
-        },
-        {
-            number:   '009-2026',
-            status:   'Новое',
-            type:     'Трудовое',
-            subType:  'Взыскание задолженности по зарплате',
-            comment:  'Заявление зарегистрировано 12.09.2026. Ожидает назначения судьи.',
-            applicant: 'Кузнецов Игорь Петрович',
-            email:    'kuznetsov.ip@mail.ru',
-            phone:    '+7 (917) 666-77-88'
-        },
-        {
-            number:   '010-2026',
-            status:   'В работе',
-            type:     'Семейное',
-            subType:  'Взыскание алиментов на несовершеннолетнего ребёнка',
-            comment:  'Назначено заседание на 20.10.2026 в 14:15. Стороны уведомлены повестками.',
-            applicant: 'Смирнова Елена Владимировна',
-            email:    'smirnova.ev@yandex.ru',
-            phone:    '+7 (912) 111-22-33'
+    let currentAdminCaseId = null;
+
+    // Загрузка дел
+    async function loadCasesAdmin() {
+        const res = await fetch('../api/admin/admin_case.php?action=get_cases');
+        const json = await res.json();
+
+        const listAdminCases = document.getElementById('casesApplicantsList');
+        listAdminCases.innerHTML = '';
+    
+        json.cases.forEach(c => {
+            const cardCaseApplicant = document.createElement('card-case-applicant');
+            cardCaseApplicant.setAttribute('id', c.id);
+            cardCaseApplicant.setAttribute('status', c.status);
+            cardCaseApplicant.setAttribute('statusColor', c.statusColor);
+            cardCaseApplicant.setAttribute('type', c.typeCase);
+            cardCaseApplicant.setAttribute('subType', c.subtypeCase);
+            cardCaseApplicant.setAttribute('comment', c.comment);
+            cardCaseApplicant.setAttribute('applicant', c.applicant);
+            cardCaseApplicant.setAttribute('email', c.email);
+            cardCaseApplicant.setAttribute('phone', c.phone);
+            listAdminCases.appendChild(cardCaseApplicant);
+        });
+
+    }
+
+    loadCasesAdmin();
+
+    // Открытие карточки дела
+    document.getElementById('casesApplicantsList').addEventListener('case-open', async (e) => {
+        const caseId = e.detail.id;
+        currentAdminCaseId = caseId;
+
+        const res  = await fetch(`../api/admin/admin_case.php?action=get_case&id=${caseId}`);
+        const json = await res.json();
+
+        if (!json.ok) {
+            alert('Не удалось загрузить дело');
+            return;
         }
-    ];
 
-    const list1 = document.getElementById('casesApplicantsList');
+        const c = json.case;
 
-    casesApplicant.forEach(c => {
-        const cardCaseApplicant = document.createElement('card-case-applicant');
-        cardCaseApplicant.setAttribute('number', c.number);
-        cardCaseApplicant.setAttribute('status', c.status);
-        cardCaseApplicant.setAttribute('statusColor', c.statusColor);
-        cardCaseApplicant.setAttribute('type', c.type);
-        cardCaseApplicant.setAttribute('subType', c.subType);
-        cardCaseApplicant.setAttribute('comment', c.comment);
-        cardCaseApplicant.setAttribute('applicant', c.applicant);
-        cardCaseApplicant.setAttribute('email', c.email);
-        cardCaseApplicant.setAttribute('phone', c.phone);
-        list1.appendChild(cardCaseApplicant);
-    });
+        document.getElementById('reviewTitle').textContent = `Судебное дело № ${c.number}`;
+        document.getElementById('reviewTypeLine').textContent = `Тип: ${c.typeCase} (Подтип: ${c.subtypeCase})`;
+        document.getElementById('reviewApplicant').textContent = `ФИО: ${c.applicant}`;
+        document.getElementById('reviewEmail').textContent = `Email: ${c.email}`;
+        document.getElementById('reviewPhone').textContent = `Телефон: ${c.phone}`;
 
-    const applicantsList = document.getElementById('casesApplicantsList');
+        // Файлы
+        const docsBlock = document.querySelector('.documents-block');
+        docsBlock.innerHTML = '';
 
-    applicantsList.addEventListener('case-open', (e) => {
+        if (json.files.length === 0) {
+            docsBlock.innerHTML = '<p class="documents-empty">Файлы не прикреплены</p>';
+        } else {
+            json.files.forEach(f => {
+                const a = document.createElement('a');
+                a.href = '../' + f.file_path;
+                a.target = '_blank';
+                a.className = 'file-link';
+                a.textContent = f.file_name;
+                docsBlock.appendChild(a);
+            });
+        }
+
+        // Переписка
+        await loadMessages(caseId);
+
         switchTab('case-review');
     });
+
+    // Загрузка переписки
+    async function loadMessages(caseId) {
+        const res  = await fetch(`../api/admin/admin_case.php?action=get_messages&case_id=${caseId}`);
+        const json = await res.json();
+
+        let history = '';
+
+        if (json.ok && json.messages.length > 0) {
+            json.messages.forEach(m => {
+                const who = m.senderRole === 'admin'
+                    ? 'Вы [администратор]'
+                    : m.senderName + ' [заявитель]';
+                history += `${who}:\n${m.text}\n\n`;
+            });
+        } else {
+            history = 'Сообщений пока нет.\n\n';
+        }
+
+        history += '--- Напишите ответ ниже ---\n';
+
+        document.getElementById('reply').value = history;
+        document.getElementById('reply').scrollTop = document.getElementById('reply').scrollHeight;
+    }
+
+    // Отправка ответа на сообщение
+    document.getElementById('sendReply').addEventListener('click', async () => {
+        const fullText = document.getElementById('reply').value;
+        const marker = '--- Напишите ответ ниже ---';
+        const idx = fullText.indexOf(marker);
+
+        const text = idx !== -1
+            ? fullText.substring(idx + marker.length).trim()
+            : fullText.trim();
+
+        if (!text) {
+            alert('Напишите текст ответа ниже маркера');
+            return;
+        }
+
+        const data = new FormData();
+        data.append('action', 'send_reply');
+        data.append('case_id', currentAdminCaseId);
+        data.append('text', text);
+
+        const res  = await fetch('../api/admin/admin_case.php', {
+            method: 'POST',
+            body: data
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+            await loadMessages(currentAdminCaseId);
+        } else {
+            alert('Ошибка: ' + json.error);
+        }
+    });
     
+    // Переход обратно к делам
     document.getElementById('backToAdminCases').addEventListener('click', (e) => {
         e.preventDefault();
         switchTab('cases-admin');
     });
 
-    const cases = [
-        {
-            number: '001-2026',
-            status: 'В работе',
-            statusColor: '#E99949',
-            type: 'Гражданское',
-            subType: 'Защита прав потребителя',
-            comment: 'Назначено предварительное заседание на 15.10.2026'
-        },
-        {
-            number: '002-2026',
-            status: 'Новое',
-            statusColor: '#4CAF50',
-            type: 'Трудовое',
-            subType: 'Восстановление на работе',
-            comment: 'Заявление принято, ожидает рассмотрения'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        },
-        {
-            number: '003-2026',
-            status: 'Закрыто',
-            statusColor: '#8E8E93',
-            type: 'Наследственное',
-            subType: 'Раздел имущества',
-            comment: 'Решение вступило в силу 20.01.2026'
-        }
-    ];
+    // Загрузка дел для назначения судьи
+    async function loadCasesforJudje() {
+        const res = await fetch('../api/admin/admin_case.php?action=get_cases');
+        const json = await res.json();
 
-    const list = document.getElementById('selectJudjeList');
+        const listJudjeCases = document.getElementById('selectJudjeList');
+        listJudjeCases.innerHTML = '';
+    
+        json.cases.forEach(c => {
+            const cardCaseJudje = document.createElement('case-card');
+            cardCaseJudje.setAttribute('id', c.id);
+            cardCaseJudje.setAttribute('status', c.status);
+            cardCaseJudje.setAttribute('statusColor', c.statusColor);
+            cardCaseJudje.setAttribute('type', c.typeCase);
+            cardCaseJudje.setAttribute('subType', c.subtypeCase);
+            cardCaseJudje.setAttribute('comment', c.comment);
+            listJudjeCases.appendChild(cardCaseJudje);
+        });
 
-    cases.forEach(c => {
-        const card = document.createElement('case-card');
-        card.setAttribute('number', c.number);
-        card.setAttribute('status', c.status);
-        card.setAttribute('statusColor', c.statusColor);
-        card.setAttribute('type', c.type);
-        card.setAttribute('subType', c.subType);
-        card.setAttribute('comment', c.comment);
-        list.appendChild(card);
+    }
+
+    loadCasesforJudje();
+
+    let selectedCaseId = null;
+
+    // Выбор дела
+    document.getElementById('selectJudjeList').addEventListener('case-edit', (e) => {
+        selectedCaseId = e.detail.id;
+
+        document.querySelectorAll('#selectJudjeList case-card').forEach(card => {
+            card.style.opacity = '0.5';
+        });
+        e.target.style.opacity = '1';
     });
 
-    const judjes = [
-        {
-            judjename:  'Иванов Иван Иванович',
-            judjeemail: 'ivanov.ii@delo.ru',
-            judjephone: '+7 (342) 220-15-01'
-        },
-        {
-            judjename:  'Петрова Анна Сергеевна',
-            judjeemail: 'petrova.as@delo.ru',
-            judjephone: '+7 (342) 220-15-02'
-        },
-        {
-            judjename:  'Николаева Ольга Дмитриевна',
-            judjeemail: 'nikolaeva.od@delo.ru',
-            judjephone: '+7 (342) 220-15-03'
-        },
-        {
-            judjename:  'Гарилов Сергей Иванович',
-            judjeemail: 'garilov.si@delo.ru',
-            judjephone: '+7 (342) 220-15-04'
-        },
-        {
-            judjename:  'Сидоров Пётр Алексеевич',
-            judjeemail: 'sidorov.pa@delo.ru',
-            judjephone: '+7 (342) 220-15-05'
-        },
-        {
-            judjename:  'Морозов Дмитрий Олегович',
-            judjeemail: 'morozov.do@delo.ru',
-            judjephone: '+7 (342) 220-15-06'
-        },
-        {
-            judjename:  'Волков Андрей Николаевич',
-            judjeemail: 'volkov.an@delo.ru',
-            judjephone: '+7 (342) 220-15-07'
-        },
-        {
-            judjename:  'Кузнецов Игорь Петрович',
-            judjeemail: 'kuznetsov.ip@delo.ru',
-            judjephone: '+7 (342) 220-15-08'
-        },
-        {
-            judjename:  'Смирнова Елена Владимировна',
-            judjeemail: 'smirnova.ev@delo.ru',
-            judjephone: '+7 (342) 220-15-09'
-        },
-        {
-            judjename:  'Фёдорова Мария Андреевна',
-            judjeemail: 'fedorova.ma@delo.ru',
-            judjephone: '+7 (342) 220-15-10'
+    // Загрузка судей в select
+    async function loadJudjesSelect() {
+        const res  = await fetch('../api/admin/admin_case.php?action=get_judjes');
+        const json = await res.json();
+
+        const select = document.getElementById('judjeSelect');
+
+        json.judjes.forEach(j => {
+            const opt = document.createElement('option');
+            opt.value = j.id;
+            opt.textContent = j.fio;
+            select.appendChild(opt);
+        });
+    }
+
+    loadJudjesSelect();
+
+    // Назначение судьи
+    document.getElementById('judjeBtn').addEventListener('click', async () => {
+        const box = document.getElementById('judjeErrorBox');
+        box.style.display = 'none';
+
+        const judgeId = document.getElementById('judjeSelect').value;
+
+        const data = new FormData();
+        data.append('action',   'assign_judje');
+        data.append('case_id',  selectedCaseId);
+        data.append('judge_id', judgeId);
+
+        const res  = await fetch('../api/admin/admin_case.php', {
+            method: 'POST',
+            body: data
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+            alert('Судья назначен');
+            selectedCaseId = null;
+            document.getElementById('judjeSelect').value = '';
+            loadCasesforJudje();
+        } else {
+            box.textContent = json.error;
+            box.style.display = 'block';
         }
-    ];
-
-    const list2 = document.getElementById('casesJudjesList');
-
-    judjes.forEach(c => {
-        const cardCaseJudjes = document.createElement('card-judje');
-        cardCaseJudjes.setAttribute('judjename', c.judjename);
-        cardCaseJudjes.setAttribute('judjeemail', c.judjeemail);
-        cardCaseJudjes.setAttribute('judjephone', c.judjephone);
-        list2.appendChild(cardCaseJudjes);
     });
+
+    // Загрузка судей
+    async function loadJudjesCards() {
+        const res  = await fetch('../api/admin/admin_case.php?action=get_judjes');
+        const json = await res.json();
+
+        const list = document.getElementById('casesJudjesList');
+        list.innerHTML = '';
+
+        json.judjes.forEach(j => {
+            const card = document.createElement('card-judje');
+            card.setAttribute('judjename', j.fio);
+            card.setAttribute('judjeemail', j.email);
+            card.setAttribute('judjephone', j.phone);
+            list.appendChild(card);
+        });
+    }
+
+    loadJudjesCards();
 
     // Переход на форму редактирования
     const judjesList = document.getElementById('casesJudjesList');

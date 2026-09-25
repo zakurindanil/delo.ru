@@ -279,7 +279,7 @@
 
         json.cases.forEach(c => {
             const card = document.createElement('case-card');
-            card.setAttribute('number', c.number);
+            card.setAttribute('id', c.id);
             card.setAttribute('status', c.status);
             card.setAttribute('statusColor', c.statusColor);
             card.setAttribute('type', c.type);
@@ -294,7 +294,7 @@
     let currentCaseId = null;
 
     document.getElementById('casesList').addEventListener('case-edit', async (e) => {
-        const caseId = e.detail.number;
+        const caseId = e.detail.id;
         currentCaseId = caseId;
 
         const res  = await fetch(`../api/applicant/submit_application.php?action=get_case&id=${caseId}`);
@@ -307,7 +307,7 @@
 
         const c = json.case;
     
-        document.getElementById('editCaseNumber').textContent = `Судебное дело № ${c.number}`;
+        document.getElementById('editCaseNumber').textContent = `Судебное дело № ${c.id}`;
 
         const editType = document.getElementById('editTypeSelect');
         editType.value = c.type_id;

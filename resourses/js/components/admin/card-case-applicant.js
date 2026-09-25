@@ -1,6 +1,6 @@
 class CardAdminApplicant extends HTMLElement {
     static get observedAttributes() {
-        return ['number', 'status', 'statusColor', 'type', 'subType', 'comment', 'applicant', 'email', 'phone']
+        return ['id', 'status', 'statusColor', 'type', 'subType', 'comment', 'applicant', 'email', 'phone']
     }
 
     constructor() {
@@ -19,7 +19,7 @@ class CardAdminApplicant extends HTMLElement {
     }
 
     render() {
-        const number = this.getAttribute('number') || '-';
+        const id = this.getAttribute('id') || '-';
         const status = this.getAttribute('status') || '';
         const statusColor = this.getAttribute('statusColor') || '';
         const type = this.getAttribute('type') || '-';
@@ -154,9 +154,8 @@ class CardAdminApplicant extends HTMLElement {
 
             <div class="cardCase">
                 <div class="statusBackground">
-                    <h2 class="number">Судебное дело № ${number}</h2>
-                    <p class="status">${status}</p>
-                    <p class="statusColor">${statusColor}</p>
+                    <h2 class="number">Судебное дело № ${id}</h2>
+                    <p class="status" style="background-color: ${statusColor};">${status}</p>
                 </div>
 
                 <p class="type">Тип: ${type}</p>
@@ -181,7 +180,7 @@ class CardAdminApplicant extends HTMLElement {
             this.dispatchEvent(new CustomEvent('case-open', {
                 bubbles: true,
                 composed: true,
-                detail: { number }
+                detail: { id }
             }));
         });
     }

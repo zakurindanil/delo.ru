@@ -1,6 +1,6 @@
 class CardCase extends HTMLElement {
     static get observedAttributes() {
-        return ['number', 'status', 'statusColor', 'type', 'subType', 'comment'];
+        return ['id', 'status', 'statusColor', 'type', 'subType', 'comment'];
     }
 
     constructor() {
@@ -19,7 +19,7 @@ class CardCase extends HTMLElement {
     }
 
     render() {
-        const number = this.getAttribute('number') || '-';
+        const id = this.getAttribute('id') || '-';
         const status = this.getAttribute('status') || '';
         const statusColor = this.getAttribute('statusColor') || '';
         const type = this.getAttribute('type') || '-';
@@ -111,7 +111,7 @@ class CardCase extends HTMLElement {
 
             <div class="cardCase">
                 <div class="statusBackground">
-                    <h2 class="number">Судебное дело № ${number}</h2>
+                    <h2 class="number">Судебное дело № ${id}</h2>
                     <p class="status">${status}</p>
                     <p class="statusColor">${statusColor}</p>
                 </div>
@@ -130,7 +130,7 @@ class CardCase extends HTMLElement {
                 this.dispatchEvent(new CustomEvent('case-edit', {
                     bubbles: true,
                     composed: true,
-                    detail: { number }
+                    detail: { id }
                 }));
             });
     }   
