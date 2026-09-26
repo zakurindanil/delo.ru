@@ -11,6 +11,7 @@
             SELECT
                 c.id AS id,
                 s.name AS status,
+                s.color AS statusColor,
                 t.name AS typeCase,
                 st.name AS subtypeCase,
                 u.fio AS applicant,
@@ -22,7 +23,7 @@
             JOIN case_subtypes st ON c.subtype_id = st.id
             JOIN users u ON c.applicant_id = u.id
             LEFT JOIN hearings h ON h.case_id = c.id
-            WHERE c.judge_id = ?
+            WHERE c.judge_id = ? AND s.name IN ('Назначено', 'Отложено')
             ORDER BY c.created_at DESC
         ");
         $stmt->execute([$_SESSION['user_id']]);

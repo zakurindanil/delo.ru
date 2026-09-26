@@ -1,6 +1,6 @@
 class CardAdminApplicant extends HTMLElement {
     static get observedAttributes() {
-        return ['id', 'status', 'statusColor', 'type', 'subType', 'comment', 'applicant', 'email', 'phone']
+        return ['id', 'status', 'statusColor', 'type', 'subType', 'comment', 'applicant', 'email', 'phone', 'avatar']
     }
 
     constructor() {
@@ -28,6 +28,7 @@ class CardAdminApplicant extends HTMLElement {
         const applicant = this.getAttribute('applicant') || '-';
         const email = this.getAttribute('email') || '-';
         const phone = this.getAttribute('phone') || '-';
+        const avatar = this.getAttribute('avatar') || '../resourses/img/icon_user.png';
 
         this.shadowRoot.innerHTML = `
 
@@ -121,6 +122,8 @@ class CardAdminApplicant extends HTMLElement {
                 .content-applicant img {
                     width: 75px;
                     height: 75px;
+                    border-radius: 50%;
+                    object-fit: cover;
                     margin-right: 15px;
                 }
 
@@ -166,7 +169,7 @@ class CardAdminApplicant extends HTMLElement {
                 </div>
 
                 <div class="content-applicant">
-                    <img src="../resourses/img/icon_user.png" alt="Аватар">
+                    <img src="${avatar}" alt="Аватар">
                     <div class="applicant-info">
                         <p class="applicant-name">Заявитель: ${applicant}</p>
                         <p class="applicant-email">Email: ${email}</p>

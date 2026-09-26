@@ -133,6 +133,11 @@
                         <select id="editSubtypeSelect" name="editSubType">
                         </select>
                     </div>
+
+                    <div class="form-group" id="adminReplyBlock" style="display:none;">
+                        <label>Ответ администратора</label>
+                        <div class="admin-reply" id="adminReplyText"></div>
+                    </div>
                 
                     <div class="form-group">
                         <label>Краткое описание дела</label>
@@ -306,7 +311,7 @@
         }
 
         const c = json.case;
-    
+
         document.getElementById('editCaseNumber').textContent = `Судебное дело № ${c.id}`;
 
         const editType = document.getElementById('editTypeSelect');
@@ -327,6 +332,15 @@
 
         document.getElementById('editComment').value = c.comment;
 
+        // Ответ админа
+        if (c.admin_comment) {
+            document.getElementById('adminReplyBlock').style.display = 'block';
+            document.getElementById('adminReplyText').textContent = c.admin_comment;
+        } else {
+            document.getElementById('adminReplyBlock').style.display = 'none';
+        }
+
+        // Файлы
         const filesList = document.getElementById('editFilesList');
         filesList.innerHTML = '';
 
@@ -399,11 +413,11 @@
         const comment = document.getElementById('editComment').value.trim();
 
         const data = new FormData();
-        data.append('action',     'update_case');
-        data.append('case_id',    currentCaseId);
-        data.append('type_id',    type_id);
+        data.append('action', 'update_case');
+        data.append('case_id', currentCaseId);
+        data.append('type_id', type_id);
         data.append('subtype_id', subtype_id);
-        data.append('comment',    comment);
+        data.append('comment', comment);
         const files = document.getElementById('editFiles').files;
         for (let i = 0; i < files.length; i++) {
             data.append('files[]', files[i]);

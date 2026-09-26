@@ -1,6 +1,6 @@
 class CardAdminJudje extends HTMLElement {
     static get observedAttributes() {
-        return ['judjename', 'judjeemail', 'judjephone']
+        return ['id', 'judjename', 'judjeemail', 'judjephone', 'avatar']
     }
 
     constructor() {
@@ -19,9 +19,11 @@ class CardAdminJudje extends HTMLElement {
     }
 
     render() {
+        const id = this.getAttribute('id') || '';
         const judjename = this.getAttribute('judjename') || '-';
         const judjeemail = this.getAttribute('judjeemail') || '';
         const judjephone = this.getAttribute('judjephone') || '';
+        const avatar = this.getAttribute('avatar') || '../resourses/img/icon_user.png';
 
         this.shadowRoot.innerHTML = `
 
@@ -48,6 +50,8 @@ class CardAdminJudje extends HTMLElement {
                 .content-judje img {
                     width: 75px;
                     height: 75px;
+                    border-radius: 50%;
+                    object-fit: cover;
                     margin-right: 15px;
                 }
 
@@ -114,7 +118,7 @@ class CardAdminJudje extends HTMLElement {
 
             <div class="cardCase">
                 <div class="content-judje">
-                    <img src="../resourses/img/icon_user.png" alt="Аватар">
+                    <img src="${avatar}" alt="Аватар">
                     <div class="judje-info">
                         <p class="judje-name">${judjename}</p>
                         <p class="judje-email">Email: ${judjeemail}</p>
@@ -132,7 +136,7 @@ class CardAdminJudje extends HTMLElement {
             this.dispatchEvent(new CustomEvent('judje-edit', {
                 bubbles: true,
                 composed: true,
-                detail: { judjename, judjeemail, judjephone }
+                detail: { id, judjename, judjeemail, judjephone }
             }));
         });
 
@@ -140,7 +144,7 @@ class CardAdminJudje extends HTMLElement {
             this.dispatchEvent(new CustomEvent('judje-delete', {
                 bubbles: true,
                 composed: true,
-                detail: { judjename }
+                detail: { id, judjename }
             }));
         });
     }

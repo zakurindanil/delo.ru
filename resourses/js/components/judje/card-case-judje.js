@@ -1,6 +1,6 @@
 class CardCaseJudge extends HTMLElement {
     static get observedAttributes() {
-        return ['id', 'status', 'typeCase', 'subtypeCase', 'applicant', 'date'];
+        return ['id', 'status', 'statusColor', 'typeCase', 'subtypeCase', 'applicant', 'date'];
     }
 
     constructor() {
@@ -21,12 +21,11 @@ class CardCaseJudge extends HTMLElement {
     render() {
         const id = this.getAttribute('id') || '-';
         const status = this.getAttribute('status') || 'Не назначено';
+        const statusColor = this.getAttribute('statusColor') || '#E99949';
         const typeCase = this.getAttribute('typeCase') || '-';
         const subtypeCase = this.getAttribute('subtypeCase') || '-';
         const applicant = this.getAttribute('applicant') || '-';
         const date = this.getAttribute('date') || 'Не назначено';
-
-        const statusColor = status === 'Назначено' ? '#4CAF50' : '#E53935';
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -76,7 +75,6 @@ class CardCaseJudge extends HTMLElement {
                     color: #FAF3DD;
                     font-size: 12px;
                     font-weight: bold;
-                    text-transform: uppercase;
                 }
 
                 .content-card .sub-type {

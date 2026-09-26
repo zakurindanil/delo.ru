@@ -66,12 +66,12 @@
     if ($action === 'get_cases') {
         $stmt = $pdo->prepare("
             SELECT
-                c.id       AS number,
-                s.name     AS status,
-                s.color    AS statusColor,
-                t.name     AS type,
-                st.name    AS subType,
-                c.comment  AS comment
+                c.id AS id,
+                s.name AS status,
+                s.color AS statusColor,
+                t.name AS type,
+                st.name AS subType,
+                c.comment AS comment
             FROM cases c
             JOIN case_statuses s  ON c.status_id  = s.id
             JOIN case_types    t  ON c.type_id    = t.id
@@ -91,7 +91,7 @@
         $caseId = (int)($_GET['id'] ?? 0);
 
         $stmt = $pdo->prepare("
-            SELECT id AS number, type_id, subtype_id, comment
+            SELECT id AS id, type_id, subtype_id, comment, admin_comment
             FROM cases
             WHERE id = ? AND applicant_id = ?
         ");

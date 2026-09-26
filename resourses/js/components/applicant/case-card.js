@@ -65,7 +65,6 @@ class CardCase extends HTMLElement {
                 }
 
                 .cardCase .status {
-                    background-color: #E99949;
                     color: #FAF3DD;
                     padding: 4px 12px;
                     border-radius: 12px;
@@ -112,8 +111,7 @@ class CardCase extends HTMLElement {
             <div class="cardCase">
                 <div class="statusBackground">
                     <h2 class="number">Судебное дело № ${id}</h2>
-                    <p class="status">${status}</p>
-                    <p class="statusColor">${statusColor}</p>
+                    <p class="status" style="background-color: ${statusColor};">${status}</p>
                 </div>
 
                 <p class="type">Тип: ${type}</p>

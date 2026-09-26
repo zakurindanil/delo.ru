@@ -104,7 +104,7 @@
                         
                 <h2 class="section-title">Данные заявителя</h2>
                 <div class="applicant-block">
-                    <img src="../resourses/img/icon_user.png" alt="Аватар" class="applicant-avatar">
+                    <img src="../resourses/img/icon_user.png" alt="Аватар" class="applicant-avatar" id="avatar">
                     <div class="applicant-data">
                         <p class="applicant-line" id="reviewApplicant">ФИО: —</p>
                         <p class="applicant-line" id="reviewEmail">Email: —</p>
@@ -121,19 +121,21 @@
                 <div class="decision-block">
                     <div class="decision-row">
                         <label>Статус заявления:</label>
-                        <select class="decision-select">
+                        <select class="decision-select" id="decisionSelect">
                             <option value="" disabled selected hidden>Выберите решение</option>
-                            <option value="approve">Принять в производство</option>
-                            <option value="revise">Отправить на доработку</option>
-                            <option value="reject">Отклонить</option>
+                            <option value="В работе">Принять в производство</option>
+                            <option value="На доработке">Отправить на доработку</option>
+                            <option value="Отклонено">Отклонить</option>
                         </select>
                     </div>
                 
                     <div class="decision-row">
-                        <label>Написать новый ответ:</label>
-                        <textarea class="decision-textarea" id="reply" placeholder="Введите текст ответа..."></textarea>
+                        <label>Ответ заявителю:</label>
+                        <textarea class="decision-textarea" id="reply" placeholder="Введите текст..."></textarea>
                     </div>
                 
+                    <div id="replyErrorBox" class="error-box" style="display:none;"></div>
+
                     <div class="button-group">
                         <button type="button" class="btn-save" id="sendReply">Отправить ответ</button>
                     </div>
@@ -143,7 +145,7 @@
             <div class="tab-content" data-tab="edit-judje">
                 <a href="#" class="back-link" id="backToJudjes">Назад к списку судей</a>
 
-                <div class="edit-form-wrapper">
+                <div class="edit-form-wrapper" id="editJudjeForm">
                     <h1>Редактирование данных судьи</h1>
                     <p>Здесь вы можете изменить ФИО, email или телефон судьи.</p>
                 
@@ -160,11 +162,13 @@
                     
                         <div class="form-group">
                             <label for="judjePhone">Телефон</label>
-                            <input type="tel" id="judjePhone" name="judjePhone">
+                            <input type="tel" id="judjePhone" name="judjePhone" placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric" autocomplete="tel" required>
                         </div>
+
+                        <div id="editJudjeErrorBox" class="error-box" style="display:none;"></div>
                     
                         <div class="button-group">
-                            <button type="button" class="btn-save">Сохранить изменения</button>
+                            <button type="button" class="btn-save" id="saveJudjeBtn">Сохранить изменения</button>
                         </div>
                     </form>
                 </div>
@@ -240,6 +244,7 @@
             cardCaseApplicant.setAttribute('applicant', c.applicant);
             cardCaseApplicant.setAttribute('email', c.email);
             cardCaseApplicant.setAttribute('phone', c.phone);
+            cardCaseApplicant.setAttribute('avatar', c.avatar);
             listAdminCases.appendChild(cardCaseApplicant);
         });
 
@@ -262,11 +267,14 @@
 
         const c = json.case;
 
-        document.getElementById('reviewTitle').textContent = `Судебное дело № ${c.number}`;
+        document.getElementById('reviewTitle').textContent = `Судебное дело № ${c.id}`;
         document.getElementById('reviewTypeLine').textContent = `Тип: ${c.typeCase} (Подтип: ${c.subtypeCase})`;
         document.getElementById('reviewApplicant').textContent = `ФИО: ${c.applicant}`;
         document.getElementById('reviewEmail').textContent = `Email: ${c.email}`;
         document.getElementById('reviewPhone').textContent = `Телефон: ${c.phone}`;
+
+        const avatarImg = document.getElementById('avatar');
+        avatarImg.src = c.avatar || '../resourses/img/icon_user.png';
 
         // Файлы
         const docsBlock = document.querySelector('.documents-block');
@@ -285,55 +293,25 @@
             });
         }
 
-        // Переписка
-        await loadMessages(caseId);
+        document.getElementById('reply').value = c.admin_comment || '';
+        document.getElementById('decisionSelect').value = c.status || '';
 
         switchTab('case-review');
     });
 
-    // Загрузка переписки
-    async function loadMessages(caseId) {
-        const res  = await fetch(`../api/admin/admin_case.php?action=get_messages&case_id=${caseId}`);
-        const json = await res.json();
-
-        let history = '';
-
-        if (json.ok && json.messages.length > 0) {
-            json.messages.forEach(m => {
-                const who = m.senderRole === 'admin'
-                    ? 'Вы [администратор]'
-                    : m.senderName + ' [заявитель]';
-                history += `${who}:\n${m.text}\n\n`;
-            });
-        } else {
-            history = 'Сообщений пока нет.\n\n';
-        }
-
-        history += '--- Напишите ответ ниже ---\n';
-
-        document.getElementById('reply').value = history;
-        document.getElementById('reply').scrollTop = document.getElementById('reply').scrollHeight;
-    }
-
     // Отправка ответа на сообщение
     document.getElementById('sendReply').addEventListener('click', async () => {
-        const fullText = document.getElementById('reply').value;
-        const marker = '--- Напишите ответ ниже ---';
-        const idx = fullText.indexOf(marker);
+        const box = document.getElementById('replyErrorBox');
+        box.style.display = 'none';
 
-        const text = idx !== -1
-            ? fullText.substring(idx + marker.length).trim()
-            : fullText.trim();
-
-        if (!text) {
-            alert('Напишите текст ответа ниже маркера');
-            return;
-        }
+        const text = document.getElementById('reply').value.trim();
+        const status = document.getElementById('decisionSelect').value;
 
         const data = new FormData();
-        data.append('action', 'send_reply');
+        data.append('action', 'save_reply');
         data.append('case_id', currentAdminCaseId);
         data.append('text', text);
+        data.append('decision', status);
 
         const res  = await fetch('../api/admin/admin_case.php', {
             method: 'POST',
@@ -342,9 +320,14 @@
         const json = await res.json();
 
         if (json.ok) {
-            await loadMessages(currentAdminCaseId);
+            alert('Ответ сохранён');
+            await loadCasesAdmin();
+            await loadCasesforJudje();
+            switchTab('cases-admin');
+            document.querySelector('.menu-item[data-tab="cases-admin"] input[type="radio"]').checked = true;
         } else {
-            alert('Ошибка: ' + json.error);
+            box.textContent = json.error;
+            box.style.display = 'block';
         }
     });
     
@@ -356,7 +339,7 @@
 
     // Загрузка дел для назначения судьи
     async function loadCasesforJudje() {
-        const res = await fetch('../api/admin/admin_case.php?action=get_cases');
+        const res  = await fetch('../api/admin/admin_case.php?action=get_cases_for_judje');
         const json = await res.json();
 
         const listJudjeCases = document.getElementById('selectJudjeList');
@@ -445,9 +428,11 @@
 
         json.judjes.forEach(j => {
             const card = document.createElement('card-judje');
+            card.setAttribute('id', j.id);
             card.setAttribute('judjename', j.fio);
             card.setAttribute('judjeemail', j.email);
             card.setAttribute('judjephone', j.phone);
+            card.setAttribute('avatar', j.avatar);
             list.appendChild(card);
         });
     }
@@ -457,8 +442,69 @@
     // Переход на форму редактирования
     const judjesList = document.getElementById('casesJudjesList');
 
-    judjesList.addEventListener('judje-edit', () => {
+    judjesList.addEventListener('judje-edit', (e) => {
+        const { id, judjename, judjeemail, judjephone } = e.detail;
+
+        editingJudjeId = id;
+
+        document.getElementById('judjeName').value  = judjename  || '';
+        document.getElementById('judjeEmail').value = judjeemail || '';
+        document.getElementById('judjePhone').value = judjephone || '';
+        
+        const box = document.getElementById('editJudjeErrorBox');
+        box.style.display = 'none';
+
         switchTab('edit-judje');
+    });
+
+    document.getElementById('saveJudjeBtn').addEventListener('click', async () => {
+        const box = document.getElementById('editJudjeErrorBox');
+        box.style.display = 'none';
+
+        const fio = document.getElementById('judjeName').value.trim();
+        const email = document.getElementById('judjeEmail').value.trim();
+        const phone = document.getElementById('judjePhone').value.trim();
+
+        const data = new FormData();
+        data.append('action', 'update_judje');
+        data.append('id', editingJudjeId);
+        data.append('fio', fio);
+        data.append('email', email);
+        data.append('phone', phone);
+
+        const res  = await fetch('../api/admin/admin_case.php', { method: 'POST', body: data });
+        const json = await res.json();
+
+        if (json.ok) {
+            alert('Изменения сохранены!');
+            editingJudjeId = null;
+            await loadJudjesCards();
+            switchTab('judje-list');
+            document.querySelector('.menu-item[data-tab="judje-list"] input[type="radio"]').checked = true;
+        } else {
+            box.textContent = json.error;
+            box.style.display = 'block';
+        }
+    });
+
+    judjesList.addEventListener('judje-delete', async (e) => {
+        const { id, judjename } = e.detail;
+
+        if (!confirm(`Удалить судью «${judjename}»?`)) return;
+
+        const data = new FormData();
+        data.append('action', 'delete_judje');
+        data.append('id', id);
+
+        const res  = await fetch('../api/admin/admin_case.php', { method: 'POST', body: data });
+        const json = await res.json();
+
+        if (json.ok) {
+            await loadJudjesCards();
+            await loadJudjesSelect();
+        } else {
+            alert('Ошибка: ' + json.error);
+        }
     });
 
     document.getElementById('backToJudjes').addEventListener('click', (e) => {

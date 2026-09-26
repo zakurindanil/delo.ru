@@ -379,6 +379,25 @@ header {
     text-decoration: underline;
 }
 
+.admin-reply {
+    background-color: #FFF8F0;
+    border-left: 4px solid #E99949;
+    padding: 15px;
+    border-radius: 5px;
+    color: #3D3D3D;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.applicant-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
 /*Футер*/
 
 footer {
