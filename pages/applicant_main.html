@@ -392,6 +392,14 @@
         if (json.ok) {
             alert('Заявление отправлено');
             loadCases();
+
+            document.getElementById('typeSelect').innerHTML = '<option value="" disabled selected hidden>Выберите тип</option>';
+            document.getElementById('subtypeSelect').innerHTML ='<option value="" disabled selected hidden>Выберите подтип</option>';
+            document.getElementById('comment').value = '';
+            document.getElementById('applicationFiles').value = '';
+
+            const filesLabel = document.getElementById('filesLabel');
+            if (filesLabel) filesLabel.textContent = 'Файлы не выбраны';
         } else {
             box.textContent = json.error;
             box.style.display = 'block';
@@ -438,67 +446,24 @@
         }
     });
 
-    const shedules = [
-        {
-            time: '15 октября 2026, 10:00',
-            caser: '001-2026',
-            typeCase: 'Гражданское',
-            subType: 'Защита прав потребителя'
-        },
-        {
-            time: '15 октября 2026, 14:30',
-            caser: '002-2026',
-            typeCase: 'Трудовое',
-            subType: 'Восстановление на работе'
-        },
-        {
-            time: '17 октября 2026, 09:15',
-            caser: '005-2026',
-            typeCase: 'Административное',
-            subType: 'Оспаривание штрафа'
-        },
-        {
-            time: '20 октября 2026, 11:00',
-            caser: '003-2026',
-            typeCase: 'Наследственное',
-            subType: 'Раздел имущества'
-        },
-        {
-            time: '22 октября 2026, 16:45',
-            caser: '007-2026',
-            typeCase: 'Семейное',
-            subType: 'Расторжение брака'
-        },
-        {
-            time: '25 октября 2026, 12:00',
-            caser: '009-2026',
-            typeCase: 'Гражданское',
-            subType: 'Возмещение ущерба'
-        },
-        {
-            time: '28 октября 2026, 15:30',
-            caser: '011-2026',
-            typeCase: 'Земельное',
-            subType: 'Спор о границах участка'
-        },
-        {
-            time: '1 ноября 2026, 10:30',
-            caser: '014-2026',
-            typeCase: 'Налоговое',
-            subType: 'Оспаривание решения ФНС'
-        }
-    ];
+    async function loadShedules() {
+        const res = await fetch('../api/applicant/submit_application.php?action=get_shedules');
+        const json = await res.json();
 
-    const list1 = document.getElementById('shedulesList');
+        const listShedules = document.getElementById('shedulesList');
+        listShedules.innerHTML = '';
 
-    shedules.forEach(s => {
-        const cardShedule = document.createElement('case-shedule');
-        cardShedule.setAttribute('time', s.time);
-        cardShedule.setAttribute('caser', s.caser);
-        cardShedule.setAttribute('typeCase', s.typeCase);
-        cardShedule.setAttribute('subType', s.subType);
-        list1.appendChild(cardShedule);
-    });
+        json.hearings.forEach(c => {
+            const cardShedule = document.createElement('case-shedule');
+            cardShedule.setAttribute('time', s.time);
+            cardShedule.setAttribute('caser', s.caser);
+            cardShedule.setAttribute('typeCase', s.typeCase);
+            cardShedule.setAttribute('subType', s.subType);
+            listShedules.appendChild(cardShedule);
+        });
+    }
+
+    loadShedules();
 
     function switchTab(tab) {
         document.querySelectorAll('.tab-content').forEach(el => {

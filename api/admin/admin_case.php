@@ -142,6 +142,9 @@
         $stmt = $pdo->prepare("UPDATE cases SET admin_comment = ?, status_id = ? WHERE id = ?");
         $stmt->execute([$text, $statusId, $case_id]);
 
+        $stmt = $pdo->prepare("INSERT INTO decisions (case_id, admin_id, decision_type, comment) VALUES (?, ?, ?, ?) ");
+        $stmt->execute([$case_id, $_SESSION['user_id'], $statusName, $text]);
+
         echo json_encode(['ok' => true]);
         exit;
     }
@@ -178,7 +181,7 @@
         $stmt = $pdo->prepare("
             UPDATE cases
             SET judge_id = ?,
-                status_id = (SELECT id FROM case_statuses WHERE name = 'Назначено' LIMIT 1)
+                status_id = (SELECT id FROM case_statuses WHERE name = 'В производстве' LIMIT 1)
             WHERE id = ?
         ");
         $stmt->execute([$judge_id, $case_id]);

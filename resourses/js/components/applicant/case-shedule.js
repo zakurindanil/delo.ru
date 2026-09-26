@@ -96,7 +96,7 @@ class CardShedule extends HTMLElement {
                         <img src="../resourses/img/time.png" alt="Дата">
                         <p class="date">${time}</p>
                     </div>
-                    <p class="sub-type">Дело: ${caser}</p>
+                    <p class="sub-type">Дело: ${caser}-2026</p>
                     <p class="sub-type">Тип: ${typeCase} ${subType}</p>
                     <div class="status-case">
                         <p>Назначено</p>

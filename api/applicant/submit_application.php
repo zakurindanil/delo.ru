@@ -172,6 +172,36 @@
         exit;
     }
 
+    if ($action === 'get_shedules') {
+        $stmt = $pdo->prepare("
+            SELECT
+                h.id,
+                h.hearing_date,
+                h.hearing_time,
+                c.id AS case_id,
+                t.name AS typeCase,
+                st.name AS subtypeCase,
+                u.fio AS judgeName
+            FROM hearings h
+            JOIN cases c ON h.case_id = c.id
+            JOIN case_types t ON c.type_id = t.id
+            JOIN case_subtypes st ON c.subtype_id = st.id
+            JOIN users u ON h.judge_id = u.id
+            WHERE c.applicant_id = ?
+            ORDER BY h.hearing_date ASC, h.hearing_time ASC
+        ");
+        $stmt->execute([$_SESSION['user_id']]);
+        $hearings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($hearings as &$h) {
+            $h['date'] = date('d.m.Y', strtotime($h['hearing_date']))
+                       . ' в ' . substr($h['hearing_time'], 0, 5);
+        }
+
+        echo json_encode(['ok' => true, 'hearings' => $hearings]);
+        exit;
+    }
+
     $types = $pdo->query("SELECT id, name FROM case_types ORDER BY name");
     $types = $types->fetchAll(PDO::FETCH_ASSOC);
 
