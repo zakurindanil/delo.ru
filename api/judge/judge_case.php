@@ -23,7 +23,7 @@
             JOIN case_subtypes st ON c.subtype_id = st.id
             JOIN users u ON c.applicant_id = u.id
             LEFT JOIN hearings h ON h.case_id = c.id
-            WHERE c.judge_id = ? AND s.name IN ('В производстве', 'Отложено')
+            WHERE c.judge_id = ? AND s.name IN ('В производстве', 'Отложено', 'Назначено')
             ORDER BY c.created_at DESC
         ");
         $stmt->execute([$_SESSION['user_id']]);
@@ -98,6 +98,28 @@
             $stmt->execute([$case_id, $_SESSION['user_id'], $date, $time]);
         }
 
+        $stmt = $pdo->prepare("
+            UPDATE cases
+            SET status_id = (SELECT id FROM case_statuses WHERE name = 'Назначено' LIMIT 1)
+            WHERE id = ?
+        ");
+        $stmt->execute([$case_id]);
+
         echo json_encode(['ok' => true]);
+        exit;
+    }
+
+    if ($action === 'get_notifications') {
+        $stmt = $pdo->prepare("
+            SELECT id, case_id, applicant, typeCase, subtypeCase, date
+            FROM notifications
+            WHERE user_id = ?
+            ORDER BY date DESC
+            LIMIT 50
+        ");
+        $stmt->execute([$_SESSION['user_id']]);
+        $cases = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['ok' => true, 'notifications' => $cases]);
         exit;
     }

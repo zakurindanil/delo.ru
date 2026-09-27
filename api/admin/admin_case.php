@@ -186,6 +186,26 @@
         ");
         $stmt->execute([$judge_id, $case_id]);
 
+        $stmt = $pdo->prepare("
+            SELECT
+                t.name AS typeCase,
+                st.name AS subtypeCase,
+                u.fio AS applicant
+            FROM cases c
+            JOIN case_types t ON c.type_id = t.id
+            JOIN case_subtypes st ON c.subtype_id = st.id
+            JOIN users u ON c.applicant_id = u.id
+            WHERE c.id = ?
+        ");
+        $stmt->execute([$case_id]);
+        $info = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $pdo->prepare("
+            INSERT INTO notifications (user_id, case_id, applicant, typeCase, subtypeCase)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([$judge_id, $case_id, $info['applicant'], $info['typeCase'], $info['subtypeCase']]);
+
         echo json_encode(['ok' => true]);
         exit;
     }

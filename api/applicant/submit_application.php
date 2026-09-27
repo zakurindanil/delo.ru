@@ -135,9 +135,7 @@
             exit;
         }
 
-        $stmt = $pdo->prepare("
-            UPDATE cases SET type_id = ?, subtype_id = ?, comment = ? WHERE id = ?
-        ");
+        $stmt = $pdo->prepare("UPDATE cases SET type_id = ?, subtype_id = ?, comment = ?, status_id = (SELECT id FROM case_statuses WHERE name = 'Новое' LIMIT 1) WHERE id = ?");
         $stmt->execute([$type_id, $subtype_id, $comment, $case_id]);
 
         if (!empty($_FILES['files']['name'][0])) {

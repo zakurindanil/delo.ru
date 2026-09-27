@@ -97,7 +97,7 @@ class CardShedule extends HTMLElement {
                         <p class="date">${time}</p>
                     </div>
                     <p class="sub-type">Дело: ${caser}-2026</p>
-                    <p class="sub-type">Тип: ${typeCase} ${subType}</p>
+                    <p class="sub-type">Тип: ${typeCase} (${subType})</p>
                     <div class="status-case">
                         <p>Назначено</p>
                     </div>

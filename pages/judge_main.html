@@ -94,6 +94,9 @@
                         <input type="time" id="time" name="time">
                     </div>
                 </form>
+
+                <div id="judgeErrorBox" class="error-box" style="display:none;"></div>
+
                 <button class="appointBtn">Утвердить и назначить</button>
             </div>
         </section>
@@ -146,6 +149,12 @@
 
 <script>
 
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.toggle('active', el.dataset.tab === tab);
+        });
+    }
+
     async function loadShedule() {
         const res = await fetch('../api/judge/judge_case.php?action=get_shedules')
         const json = await res.json();
@@ -155,80 +164,73 @@
 
         json.hearings.forEach(s => {
             const cardShedule = document.createElement('case-shedule');
-            cardShedule.setAttribute('time', s.time);
-            cardShedule.setAttribute('caser', s.caser);
+            cardShedule.setAttribute('time', s.date);
+            cardShedule.setAttribute('caser', s.case_id);
             cardShedule.setAttribute('typeCase', s.typeCase);
-            cardShedule.setAttribute('subType', s.subType);
+            cardShedule.setAttribute('subType', s.subtypeCase);
             listShedule.appendChild(cardShedule);
         });
     }
 
     loadShedule();
 
-    const notifications = [
-        {
-            caseNumber:  '11-2026',
-            applicant:   'Гарилов Сергей Иванович',
-            typeCase:    'Исковые заявления о защите семейных прав',
-            subtypeCase: 'Расторжение брака',
-            date:        '23.06.2026 03:44'
-        },
-        {
-            caseNumber:  '12-2026',
-            applicant:   'Климов Степан Иванович',
-            typeCase:    'Гражданское',
-            subtypeCase: 'Защита прав потребителя',
-            date:        '23.06.2026 10:15'
-        },
-        {
-            caseNumber:  '14-2026',
-            applicant:   'Петрова Анна Сергеевна',
-            typeCase:    'Трудовое',
-            subtypeCase: 'Восстановление на работе',
-            date:        '24.06.2026 09:30'
-        },
-        {
-            caseNumber:  '17-2026',
-            applicant:   'Сидоров Пётр Алексеевич',
-            typeCase:    'Административное',
-            subtypeCase: 'Оспаривание штрафа',
-            date:        '25.06.2026 14:20'
-        },
-        {
-            caseNumber:  '19-2026',
-            applicant:   'Николаева Ольга Дмитриевна',
-            typeCase:    'Наследственное',
-            subtypeCase: 'Раздел имущества',
-            date:        '26.06.2026 11:50'
-        },
-        {
-            caseNumber:  '22-2026',
-            applicant:   'Морозов Дмитрий Олегович',
-            typeCase:    'Земельное',
-            subtypeCase: 'Спор о границах участка',
-            date:        '27.06.2026 16:05'
-        }
-    ];
+    let currentAppointCaseId = null;
 
-    const listNotification = document.getElementById('notificationsList');
+    document.getElementById('casesJudjeList').addEventListener('case-approve', (e) => {
+        currentAppointCaseId = e.detail.id;
 
-    notifications.forEach(n => {
-        const cardNotification = document.createElement('notification-card');
-        cardNotification.setAttribute('caseNumber', n.caseNumber);
-        cardNotification.setAttribute('applicant', n.applicant);
-        cardNotification.setAttribute('typeCase', n.typeCase);
-        cardNotification.setAttribute('subtypeCase', n.subtypeCase);
-        cardNotification.setAttribute('date', n.date);
-        listNotification.appendChild(cardNotification);
+        document.getElementById('appointUid').textContent = `УИД: ДЕЛО-${e.detail.id}`;
+        document.getElementById('appointApplicant').textContent = `Заявитель: ${e.detail.applicant || '-'}`;
+
+        document.getElementById('date').value = '';
+        document.getElementById('time').value = '';
+
+        switchTab('appoint');
     });
 
+    document.querySelector('.appointBtn').addEventListener('click', async () => {
+        const box = document.getElementById('judgeErrorBox');
+        box.style.display = 'none';
+
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        const data = new FormData();
+        data.append('action', 'create_hearing');
+        data.append('case_id', currentAppointCaseId);
+        data.append('date', date);
+        data.append('time', time);
+
+        const res  = await fetch('../api/judge/judge_case.php', {
+            method: 'POST',
+            body: data
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+            alert('Заседание назначено');
+            await loadJudjeCases();
+            await loadShedule();
+            currentAppointCaseId = null;
+            switchTab('cases');
+        } else {
+            box.textContent = json.error;
+            box.style.display = 'block';
+        }
+    });
+
+    document.getElementById('backToCases').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('cases');
+    });
+    
     async function loadJudjeCases() {
         const res = await fetch('../api/judge/judge_case.php?action=get_cases');
         const json = await res.json();
-
+        
         const judjeCaseList = document.getElementById('casesJudjeList');
         judjeCaseList.innerHTML = '';
-
+        
         json.cases.forEach(j => {
             const cardJudjeCase = document.createElement('card-case-judje');
             cardJudjeCase.setAttribute('id', j.id);
@@ -240,9 +242,28 @@
             judjeCaseList.appendChild(cardJudjeCase);
         });
     }
-
+    
     loadJudjeCases();
+    
+    async function loadNotifications() {
+        const res = await fetch('../api/judge/judge_case.php?action=get_notifications')
+        const json = await res.json();
 
+        const listNotifications = document.getElementById('notificationsList')
+        listNotifications.innerHTML = '';
+
+        json.notifications.forEach(n => {
+            const cardNotification = document.createElement('notification-card');
+            cardNotification.setAttribute('id', n.id);
+            cardNotification.setAttribute('applicant', n.applicant);
+            cardNotification.setAttribute('typeCase', n.typeCase);
+            cardNotification.setAttribute('subtypeCase', n.subtypeCase);
+            cardNotification.setAttribute('date', n.date);
+            listNotifications.appendChild(cardNotification);
+        });
+    }
+
+    loadNotifications();
 </script>
 
 </html>

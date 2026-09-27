@@ -1,6 +1,6 @@
 class CardNotification extends HTMLElement {
     static get observedAttributes() {
-        return ['caseNumber', 'applicant', 'typeCase', 'subtypeCase', 'date']
+        return ['id', 'applicant', 'typeCase', 'subtypeCase', 'date']
     }
 
     constructor() {
@@ -19,7 +19,7 @@ class CardNotification extends HTMLElement {
     }
 
     render() {
-        const caseNumber = this.getAttribute('caseNumber') || '-';
+        const id = this.getAttribute('id') || '-';
         const applicant = this.getAttribute('applicant') || '-';
         const typeCase = this.getAttribute('typeCase') || '-';
         const subtypeCase = this.getAttribute('subtypeCase') || '-';
@@ -78,7 +78,7 @@ class CardNotification extends HTMLElement {
                     <img src="../resourses/img/alert.png" alt="Уведомление">
                     <p class="title">Поступило новое дело</p>
                 </div>
-                <p class="info">Вам назначено дело №ДЕЛО-${caseNumber}</p>
+                <p class="info">Вам назначено дело №ДЕЛО-${id}-2026</p>
                 <p class="info">Заявитель: ${applicant}</p>
                 <p class="info">Тип: ${typeCase} — ${subtypeCase}</p>
                 <p class="info">Дата поступления: ${date}</p>
