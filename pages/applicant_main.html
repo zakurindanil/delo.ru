@@ -455,10 +455,10 @@
 
         json.hearings.forEach(c => {
             const cardShedule = document.createElement('case-shedule');
-            cardShedule.setAttribute('time', s.time);
-            cardShedule.setAttribute('caser', s.caser);
-            cardShedule.setAttribute('typeCase', s.typeCase);
-            cardShedule.setAttribute('subType', s.subType);
+            cardShedule.setAttribute('time', c.date);
+            cardShedule.setAttribute('caser', c.case_id);
+            cardShedule.setAttribute('typeCase', c.typeCase);
+            cardShedule.setAttribute('subType', c.subtypeCase);
             listShedules.appendChild(cardShedule);
         });
     }
