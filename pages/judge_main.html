@@ -188,6 +188,29 @@
         switchTab('appoint');
     });
 
+    document.getElementById('casesJudjeList').addEventListener('case-close', async (e) => {
+        const caseId = e.detail.id;
+
+        if (!confirm('Закрыть дело?')) return;
+
+        const data = new FormData();
+        data.append('action',  'close_case');
+        data.append('case_id', caseId);
+
+        const res  = await fetch('../api/judge/judge_case.php', {
+            method: 'POST',
+            body: data
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+            alert('Дело закрыто');
+            loadJudjeCases();
+        } else {
+            alert('Ошибка: ' + json.error);
+        }
+    });
+
     document.querySelector('.appointBtn').addEventListener('click', async () => {
         const box = document.getElementById('judgeErrorBox');
         box.style.display = 'none';

@@ -123,3 +123,57 @@
         echo json_encode(['ok' => true, 'notifications' => $cases]);
         exit;
     }
+
+    if ($action === 'close_case') {
+
+        $case_id = (int)($_POST['case_id'] ?? 0);
+
+        $stmt = $pdo->prepare("SELECT id FROM cases WHERE id = ? AND judge_id = ?");
+        $stmt->execute([$case_id, $_SESSION['user_id']]);
+        if (!$stmt->fetch()) {
+            echo json_encode(['ok' => false, 'error' => 'Дело не найдено']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("
+            SELECT hearing_date, hearing_time
+            FROM hearings
+            WHERE case_id = ?
+        ");
+        $stmt->execute([$case_id]);
+        $hearing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$hearing) {
+            echo json_encode(['ok' => false, 'error' => 'Заседание ещё не назначено!']);
+            exit;
+        }
+    
+        $hearingDateTime = strtotime($hearing['hearing_date'] . ' ' . $hearing['hearing_time']);
+        $now = time();
+
+        if ($hearingDateTime > $now) {
+            echo json_encode([
+                'ok' => false,
+                'error' => 'Заседание ещё не проведено!'
+            ]);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("
+            UPDATE cases SET status_id = (SELECT id FROM case_statuses WHERE name = 'Закрыто' LIMIT 1) WHERE id = ?
+        ");
+        $stmt->execute([$case_id]);
+
+        $stmt = $pdo->prepare("SELECT applicant_id FROM cases WHERE id = ?");
+        $stmt->execute([$case_id]);
+        $applicant_id = $stmt->fetchColumn();
+
+        $stmt = $pdo->prepare("
+            INSERT INTO notifications (user_id, case_id, applicant, typeCase, subtypeCase)
+            VALUES (?, ?, '', '', '')
+        ");
+        $stmt->execute([$applicant_id, $case_id]);
+
+        echo json_encode(['ok' => true]);
+        exit;
+    }

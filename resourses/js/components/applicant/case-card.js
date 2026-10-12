@@ -123,14 +123,17 @@ class CardCase extends HTMLElement {
             </div>
         `;
 
-        this.shadowRoot.querySelector('.cardCase')
-            .addEventListener('click', () => {
+        const isClosed = status === 'Закрыто';
+
+        if (!isClosed) {
+            this.shadowRoot.querySelector('.cardCase').addEventListener('click', () => {
                 this.dispatchEvent(new CustomEvent('case-edit', {
                     bubbles: true,
                     composed: true,
                     detail: { id }
                 }));
             });
+        }
     }   
 }
 

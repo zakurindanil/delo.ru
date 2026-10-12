@@ -108,6 +108,13 @@ class CardCaseJudge extends HTMLElement {
                     margin: 0px 0px 15px 0px;
                 }
 
+                .btn-group {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 10px;
+                    margin-top: 10px;
+                }
+
                 .btn-approve {
                     width: auto;
                     padding: 12px 30px;
@@ -126,6 +133,24 @@ class CardCaseJudge extends HTMLElement {
                 .btn-approve:hover {
                     background-color: #d88a3d;
                 }
+
+                .btn-close {
+                    width: auto;
+                    padding: 12px 30px;
+                    background-color: #f04033;
+                    color: #FFFFFF;
+                    border: none;
+                    border-radius: 6px;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: background-color 0.25s;
+                }
+
+                .btn-close:hover {
+                    background-color: #be361d;
+                }
             </style>
 
             <div class="content-card">
@@ -143,13 +168,25 @@ class CardCaseJudge extends HTMLElement {
                 <p class="date-title">Дата и время:</p>
                 <p class="date">${date}</p>
 
-                <button type="button" class="btn-approve">Назначить</button>
+                <div class="btn-group">
+                    <button type="button" class="btn-close">Закрыть дело</button>
+                    <button type="button" class="btn-approve">Назначить</button>
+                </div>
             </div>
         `;
 
         this.shadowRoot.querySelector('.btn-approve')
             .addEventListener('click', () => {
                 this.dispatchEvent(new CustomEvent('case-approve', {
+                    bubbles: true,
+                    composed: true,
+                    detail: { id, applicant }
+                }));
+            });
+
+        this.shadowRoot.querySelector('.btn-close')
+            .addEventListener('click', () => {
+                this.dispatchEvent(new CustomEvent('case-close', {
                     bubbles: true,
                     composed: true,
                     detail: { id, applicant }
