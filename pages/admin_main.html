@@ -63,6 +63,11 @@
             <div class="tab-content active" data-tab="cases-admin">
                 <h1>Входящие заявления</h1>
                 <p>Реестр всех судебных дел, поступивших в систему.</p>
+
+                <select id="filterType">
+                    <option value="">Все типы дел</option>
+                </select>
+
                 <div class="cases-list-applicants" id="casesApplicantsList"></div>
             </div>
 
@@ -223,33 +228,56 @@
 
 
 <script>
-    let currentAdminCaseId = null;
+    let allCasesAdmin = [];
 
-    // Загрузка дел
+    // Загрузка дел и фильтрация
     async function loadCasesAdmin() {
         const res = await fetch('../api/admin/admin_case.php?action=get_cases');
         const json = await res.json();
 
-        const listAdminCases = document.getElementById('casesApplicantsList');
-        listAdminCases.innerHTML = '';
-    
-        json.cases.forEach(c => {
-            const cardCaseApplicant = document.createElement('card-case-applicant');
-            cardCaseApplicant.setAttribute('id', c.id);
-            cardCaseApplicant.setAttribute('status', c.status);
-            cardCaseApplicant.setAttribute('statusColor', c.statusColor);
-            cardCaseApplicant.setAttribute('type', c.typeCase);
-            cardCaseApplicant.setAttribute('subType', c.subtypeCase);
-            cardCaseApplicant.setAttribute('comment', c.comment);
-            cardCaseApplicant.setAttribute('applicant', c.applicant);
-            cardCaseApplicant.setAttribute('email', c.email);
-            cardCaseApplicant.setAttribute('phone', c.phone);
-            cardCaseApplicant.setAttribute('avatar', c.avatar);
-            listAdminCases.appendChild(cardCaseApplicant);
+        allCasesAdmin = json.cases || [];
+        
+        const typeSelect = document.getElementById('filterType');
+        const types = [...new Set(allCasesAdmin.map(c => c.typeCase))].sort();
+        typeSelect.innerHTML = '<option value="">Все типы дел</option>';
+        types.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            typeSelect.appendChild(opt);
         });
 
+        renderCasesAdmin();
     }
 
+    function renderCasesAdmin() {
+        const typeFilter = document.getElementById('filterType').value;
+        const list = document.getElementById('casesApplicantsList');
+        list.innerHTML = '';
+
+        let filtered = allCasesAdmin;
+
+        if (typeFilter) {
+            filtered = filtered.filter(c => c.typeCase === typeFilter);
+        }
+
+        filtered.forEach(c => {
+            const card = document.createElement('card-case-applicant');
+            card.setAttribute('id', c.id);
+            card.setAttribute('status', c.status);
+            card.setAttribute('statusColor', c.statusColor);
+            card.setAttribute('type', c.typeCase);
+            card.setAttribute('subType', c.subtypeCase);
+            card.setAttribute('comment', c.comment);
+            card.setAttribute('applicant', c.applicant);
+            card.setAttribute('email', c.email);
+            card.setAttribute('phone', c.phone);
+            card.setAttribute('avatar', c.avatar);
+            list.appendChild(card);
+        });
+    }
+
+    document.getElementById('filterType').addEventListener('change', renderCasesAdmin);
     loadCasesAdmin();
 
     // Открытие карточки дела
